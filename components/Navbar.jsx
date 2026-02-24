@@ -1,32 +1,57 @@
-import Link from "next/link";
+"use client";
 
-const menuItems = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Contact", href: "#contact" },
-];
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import FullscreenMenu from "./FullscreenMenu";
 
 export default function Navbar() {
-  return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6 md:px-10">
-        <Link href="/" className="text-base font-semibold tracking-[0.2em] text-white">
-          TEZH
-        </Link>
+  const [menuOpen, setMenuOpen] = useState(false);
 
-        <ul className="flex items-center gap-6">
-          {menuItems.map((item) => (
-            <li key={item.label}>
-              <a
-                href={item.href}
-                className="text-sm text-neutral-300 transition-colors duration-200 hover:text-white"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </header>
+  useEffect(() => {
+    if (!menuOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  return (
+    <>
+      <header className="fixed top-0 w-full z-50 bg-black/40 backdrop-blur-lg border-b border-white/10">
+        <nav className="flex justify-between items-center px-6 py-4">
+          <Link href="/" className="text-xl font-semibold tracking-wide text-white">
+            TEZH
+          </Link>
+
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="text-sm text-neutral-300 hover:text-white transition-colors duration-200">
+              Menu
+            </span>
+            <div className="flex flex-col gap-1 w-6 h-6 justify-center">
+              <span
+                className={
+                  `h-[2px] w-6 bg-white transition-all duration-300 ease-in-out ` +
+                  (menuOpen ? "rotate-45 translate-y-[7px]" : "rotate-0")
+                }
+              />
+              <span
+                className={
+                  `h-[2px] w-6 bg-white transition-all duration-300 ease-in-out ` +
+                  (menuOpen ? "-rotate-45 -translate-y-[7px]" : "rotate-0")
+                }
+              />
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <FullscreenMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+    </>
   );
 }

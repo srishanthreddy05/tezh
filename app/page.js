@@ -34,6 +34,8 @@ export default function Home() {
       </main>
 
       <div id="about" />
+      <div id="careers" />
+      <div id="case-studies" />
       <div id="services" />
       <div id="contact" />
     </>
