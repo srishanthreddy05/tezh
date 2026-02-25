@@ -22,7 +22,7 @@ export default function Home() {
             We Build Digital Power
           </h1>
           <p className="mt-5 text-base text-neutral-300 md:text-lg">
-            Premium websites crafted with clarity and performance.
+            Transfrom Ideas into Intelligent Solutions.
           </p>
           <button
             type="button"
