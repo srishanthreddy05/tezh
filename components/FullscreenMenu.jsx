@@ -35,8 +35,11 @@ export default function FullscreenMenu({ isOpen, onClose }) {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="fixed inset-0 z-50 h-screen overflow-y-auto bg-neutral-950"
         >
-          {/* Back button: absolute top-6 right-6 on mobile, right-16 top-10 on lg+ */}
-          <div className="absolute top-6 right-6 z-50 lg:top-10 lg:right-16">
+          {/* Header row: logo and back button in same line */}
+          <div className="w-full flex items-center justify-between px-8 pt-6 lg:px-24 lg:pt-10">
+            <Link href="/" className="text-xl font-semibold tracking-wide text-white" onClick={onClose}>
+              TEZH
+            </Link>
             <button
               type="button"
               onClick={onClose}
@@ -78,8 +81,8 @@ export default function FullscreenMenu({ isOpen, onClose }) {
                     } : undefined}
                     className={
                       `inline-block cursor-pointer font-light tracking-tight transition duration-300
-                      text-4xl text-neutral-400 hover:text-white
-                      lg:text-[120px] lg:text-neutral-600
+                      text-2xl text-neutral-400 hover:text-white
+                      lg:text-6xl lg:text-neutral-600
                       ${isActive ? "text-white lg:text-white" : ""}`
                     }
                   >
