@@ -17,6 +17,8 @@ export default function FullscreenMenu({ isOpen, onClose }) {
   const [activeLink, setActiveLink] = useState(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [originPosition, setOriginPosition] = useState({ x: 0, y: 0 });
+  const [textCenter, setTextCenter] = useState({ x: 0, y: 0 });
+  // const [rotation, setRotation] = useState(0);
 
   const activeItem = navItems.find((item) => item.label === activeLink) ?? null;
 
@@ -46,7 +48,7 @@ export default function FullscreenMenu({ isOpen, onClose }) {
 
           {/* Responsive nav layout */}
           <ul
-            className="flex flex-col items-start justify-center px-8 py-24 gap-y-8 w-full h-full leading-none
+            className="flex flex-col items-start px-8 py-24 gap-y-6 w-full
                        lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-20 lg:gap-y-4 lg:px-24 lg:py-0"
           >
             {navItems.map((item) => {
@@ -61,11 +63,19 @@ export default function FullscreenMenu({ isOpen, onClose }) {
                       const centerX = rect.left + rect.width / 2;
                       const centerY = rect.top + rect.height / 2;
                       setOriginPosition({ x: centerX, y: centerY });
+                      setTextCenter({ x: centerX, y: centerY });
                       setCursorPosition({ x: centerX, y: centerY });
                       setActiveLink(item.label);
                     } : undefined}
                     onMouseLeave={isDesktop ? () => setActiveLink(null) : undefined}
-                    onMouseMove={isDesktop ? (event) => setCursorPosition({ x: event.clientX + 20, y: event.clientY + 20 }) : undefined}
+                    onMouseMove={isDesktop ? (event) => {
+                      const cursorX = event.clientX;
+                      const cursorY = event.clientY;
+                      // Midpoint between text center and cursor
+                      const midX = (textCenter.x + cursorX) / 2;
+                      const midY = (textCenter.y + cursorY) / 2;
+                      setCursorPosition({ x: midX, y: midY });
+                    } : undefined}
                     className={
                       `inline-block cursor-pointer font-light tracking-tight transition duration-300
                       text-4xl text-neutral-400 hover:text-white
