@@ -830,67 +830,67 @@ function Founder() {
    SECTION 8 — BLOG PREVIEW
 ═══════════════════════════════════════════════════════════════════════ */
 
-function BlogPreview() {
-  const posts = [
-    { label: "Aug 30, 2025", tag: "Inside Tezh", title: "Hello World — Welcome to the Tezh Blog", min: "1 min read" },
-    { label: "Sep 13, 2022", tag: "Growth", title: "10 Simple Practices to Get 1% Better Every Day", min: "2 min read" },
-  ];
+// function BlogPreview() {
+//   const posts = [
+//     { label: "Aug 30, 2025", tag: "Inside Tezh", title: "Hello World — Welcome to the Tezh Blog", min: "1 min read" },
+//     { label: "Sep 13, 2022", tag: "Growth", title: "10 Simple Practices to Get 1% Better Every Day", min: "2 min read" },
+//   ];
 
-  return (
-    <section style={{ background: "var(--bg-raised)", padding: "100px 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 56, flexWrap: "wrap", gap: 24 }}>
-          <div>
-            <Reveal>
-              <span className="eyebrow" style={{ marginBottom: 12, display: "block" }}>
-                <span className="eyebrow-line" />
-                Knowledge base
-              </span>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em" }}>
-                Insights & News
-              </h2>
-            </Reveal>
-          </div>
-          <Reveal delay={0.15}>
-            <a href="/blog" className="btn-ghost" style={{ fontSize: "0.82rem" }}>View All →</a>
-          </Reveal>
-        </div>
+//   return (
+//     <section style={{ background: "var(--bg-raised)", padding: "100px 0" }}>
+//       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
+//         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 56, flexWrap: "wrap", gap: 24 }}>
+//           <div>
+//             <Reveal>
+//               <span className="eyebrow" style={{ marginBottom: 12, display: "block" }}>
+//                 <span className="eyebrow-line" />
+//                 Knowledge base
+//               </span>
+//             </Reveal>
+//             <Reveal delay={0.1}>
+//               <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em" }}>
+//                 Insights & News
+//               </h2>
+//             </Reveal>
+//           </div>
+//           <Reveal delay={0.15}>
+//             <a href="/blog" className="btn-ghost" style={{ fontSize: "0.82rem" }}>View All →</a>
+//           </Reveal>
+//         </div>
 
-        <hr className="sp-hr" style={{ marginBottom: 48 }} />
+//         <hr className="sp-hr" style={{ marginBottom: 48 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-          {posts.map((post, i) => (
-            <Reveal key={post.title} delay={i * 0.1}>
-              <a href="/blog" style={{ textDecoration: "none" }}>
-                <div style={{
-                  border: "1px solid var(--border)", borderRadius: 18,
-                  padding: "36px 32px", background: "var(--surface)",
-                  transition: "border-color 0.3s, transform 0.3s",
-                  cursor: "pointer", position: "relative", overflow: "hidden",
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "translateY(0)"; }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
-                    <span className="sp-body" style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--faint)" }}>{post.tag}</span>
-                    <span className="sp-body" style={{ fontSize: "0.65rem", color: "var(--faint)" }}>{post.label}</span>
-                  </div>
-                  <h3 className="sp-display" style={{ fontSize: "1.15rem", fontWeight: 600, color: "var(--text)", marginBottom: 20, lineHeight: 1.35 }}>{post.title}</h3>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span className="sp-body" style={{ fontSize: "0.72rem", color: "var(--faint)" }}>{post.min}</span>
-                    <span style={{ color: "var(--muted)", fontSize: "0.85rem" }}>→</span>
-                  </div>
-                </div>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+//         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+//           {posts.map((post, i) => (
+//             <Reveal key={post.title} delay={i * 0.1}>
+//               <a href="/blog" style={{ textDecoration: "none" }}>
+//                 <div style={{
+//                   border: "1px solid var(--border)", borderRadius: 18,
+//                   padding: "36px 32px", background: "var(--surface)",
+//                   transition: "border-color 0.3s, transform 0.3s",
+//                   cursor: "pointer", position: "relative", overflow: "hidden",
+//                 }}
+//                   onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+//                   onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "translateY(0)"; }}
+//                 >
+//                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
+//                     <span className="sp-body" style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--faint)" }}>{post.tag}</span>
+//                     <span className="sp-body" style={{ fontSize: "0.65rem", color: "var(--faint)" }}>{post.label}</span>
+//                   </div>
+//                   <h3 className="sp-display" style={{ fontSize: "1.15rem", fontWeight: 600, color: "var(--text)", marginBottom: 20, lineHeight: 1.35 }}>{post.title}</h3>
+//                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+//                     <span className="sp-body" style={{ fontSize: "0.72rem", color: "var(--faint)" }}>{post.min}</span>
+//                     <span style={{ color: "var(--muted)", fontSize: "0.85rem" }}>→</span>
+//                   </div>
+//                 </div>
+//               </a>
+//             </Reveal>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 
 /* ═══════════════════════════════════════════════════════════════════════
    SECTION 9 — FINAL CTA
@@ -1106,7 +1106,7 @@ export default function LandingPage() {
         <Process />
         <SocialProof />
         <Founder />
-        <BlogPreview />
+        {/* <BlogPreview /> */}
         <FinalCTA />
       </main>
       <Footer />
