@@ -120,7 +120,7 @@ export default function Navbar() {
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex items-center gap-3 bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
+            className="flex items-center bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
           >
             <motion.span
               className="nb-sans text-sm text-neutral-300 tracking-wide select-none"
@@ -129,20 +129,6 @@ export default function Navbar() {
             >
               Menu
             </motion.span>
-            <div className="flex flex-col items-end justify-center w-6 h-5 gap-0">
-              <motion.span
-                className="block h-[1.5px] bg-white rounded-full origin-center"
-                animate={open ? { width: 24, rotate: 45,  translateY: "0.38rem" }
-                              : { width: 24, rotate: 0,   translateY: 0 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              />
-              <motion.span
-                className="block h-[1.5px] bg-white rounded-full origin-center mt-[7px]"
-                animate={open ? { width: 24, rotate: -45, translateY: "-0.38rem" }
-                              : { width: 16, rotate: 0,   translateY: 0 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              />
-            </div>
           </button>
         </div>
       </header>
