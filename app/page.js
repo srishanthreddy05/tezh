@@ -110,15 +110,12 @@ const CSS = `
     --gold:      rgba(220,195,145,0.9);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
+  html { scroll-behavior: auto; }
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     overflow-x: hidden;
-    width: 100vw;
     -webkit-font-smoothing: antialiased;
   }
 
