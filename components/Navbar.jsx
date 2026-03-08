@@ -147,10 +147,41 @@ export default function Navbar() {
             {/* Ambient glow */}
             <div className="pointer-events-none absolute top-0 right-0 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] rounded-full bg-white/[0.02] blur-3xl translate-x-1/3 -translate-y-1/3" />
 
-            {/* ── DESKTOP: Horizontal layout (lg+) ── */}
-            <div className="hidden lg:flex flex-1 items-center justify-center relative z-10 px-4 md:px-20 w-full overflow-hidden">
+            {/* ── DESKTOP: Split Layout (lg+) ── */}
+            <div className="hidden lg:flex flex-1 relative z-10 w-full max-w-[1440px] mx-auto px-16 xl:px-32 items-center">
+              
+              {/* Left Column: Info/Contact */}
               <motion.div
-                className="w-full flex items-center justify-center gap-0"
+                className="w-[45%] flex flex-col justify-center pr-20 xl:pr-32 border-r border-white/[0.08] h-[60%]"
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] } },
+                  exit: { opacity: 0, transition: { duration: 0.2 } }
+                }}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <div className="mb-14">
+                  <h4 className="nb-sans text-[0.65rem] tracking-[0.25em] text-white/30 uppercase mb-5">Let's Talk</h4>
+                  <a href="mailto:hello@tezh.com" className="nb-display text-4xl text-white/80 hover:text-white transition-colors duration-300">
+                    hello@tezh.com
+                  </a>
+                </div>
+                
+                <div>
+                  <h4 className="nb-sans text-[0.65rem] tracking-[0.25em] text-white/30 uppercase mb-5">Our Headquarters</h4>
+                  <p className="nb-sans text-sm text-white/60 leading-loose font-light">
+                    Tezh Technologies<br />
+                    123 Innovation Drive<br />
+                    Tech District, NY 10001
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Right Column: Navigation Links */}
+              <motion.div
+                className="w-[55%] flex flex-col gap-8 justify-center items-start pl-16 xl:pl-24"
                 variants={listVariants}
                 initial="hidden"
                 animate="visible"
@@ -164,41 +195,27 @@ export default function Navbar() {
                     <motion.div
                       key={item.name}
                       variants={itemVariants}
-                      className="flex-1 flex flex-col items-center"
                       onMouseEnter={() => setHoveredIdx(i)}
                       onMouseLeave={() => setHoveredIdx(null)}
+                      className="w-fit"
                     >
-                      {/* Vertical divider — hidden on first item */}
-                      {i !== 0 && (
-                        <div className="absolute h-16 w-[1px] bg-white/[0.06] -translate-x-full" />
-                      )}
-
                       <a
                         href={item.link}
                         onClick={(e) => navigate(e, item.link)}
-                        className={`nb-desk-item flex flex-col items-center gap-2 px-4 py-6 cursor-pointer no-underline transition-all duration-300
-                          ${isHovered ? "is-active" : ""}
-                        `}
+                        className="group flex items-center gap-8 cursor-pointer no-underline"
                         style={{ textDecoration: "none" }}
                       >
-                        {/* Index number */}
                         <span
-                          className="nb-sans text-[0.55rem] font-medium tracking-[0.25em] transition-colors duration-300"
-                          style={{ color: isDimmed ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.25)" }}
+                          className="nb-sans text-sm font-medium tracking-[0.2em] transition-colors duration-500 text-left w-6"
+                          style={{ color: isDimmed ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)" }}
                         >
                           {item.label}
                         </span>
-
-                        {/* Name */}
                         <span
-                          className="nb-display font-light leading-none tracking-wide whitespace-nowrap transition-all duration-300"
+                          className="nb-display text-6xl xl:text-7xl font-light leading-none tracking-tight transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] text-left"
                           style={{
-                            fontSize: isHovered ? "2.2rem" : "1.9rem",
-                            color: isDimmed
-                              ? "rgba(255,255,255,0.10)"
-                              : isHovered
-                                ? "rgba(255,255,255,1)"
-                                : "rgba(255,255,255,0.45)",
+                            color: isDimmed ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.95)",
+                            transform: isHovered ? "translateX(24px)" : "translateX(0)",
                           }}
                         >
                           {item.name}
@@ -222,18 +239,18 @@ export default function Navbar() {
                 <motion.div
                   key={item.name}
                   variants={itemVariants}
-                  className="w-full overflow-hidden"
+                  className="w-full"
                 >
                   <a
                     href={item.link}
                     onClick={(e) => navigate(e, item.link)}
-                    className="nb-mob-item flex items-baseline gap-5 py-3 w-full text-white/25 hover:text-white transition-colors duration-300 cursor-pointer"
+                    className="group flex flex-col gap-1 py-4 w-full cursor-pointer no-underline border-b border-white/[0.06]"
                     style={{ textDecoration: "none" }}
                   >
-                    <span className="nb-sans text-[0.6rem] font-medium tracking-[0.2em] text-white/20 self-center shrink-0">
+                    <span className="nb-sans text-[0.55rem] font-medium tracking-[0.25em] text-white/30 uppercase">
                       {item.label}
                     </span>
-                    <span className="nb-display text-5xl md:text-6xl font-light leading-[1.05] tracking-tight">
+                    <span className="nb-display text-5xl md:text-6xl font-light leading-none tracking-tight text-white/60 group-hover:text-white transition-all duration-300 pt-1 group-hover:translate-x-2">
                       {item.name}
                     </span>
                   </a>
