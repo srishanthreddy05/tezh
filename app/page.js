@@ -1184,7 +1184,6 @@ export default function LandingPage() {
   return (
     <>
       <style>{CSS}</style>
-      <Navbar />
       <main className="overflow-x-hidden w-full m-0 p-0">
         <Hero overlayRef={overlayRef} heroRef={heroRef} />
         <Positioning />
