@@ -118,6 +118,7 @@ const CSS = `
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     overflow-x: hidden;
+    width: 100vw;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -305,12 +306,97 @@ const CSS = `
 
   /* Marquee */
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+  .marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; will-change: transform; max-width: 100vw; }
   .marquee-track:hover { animation-play-state: paused; }
 
   /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(80,80,80,0.5); border-radius: 6px; }
+
+  /* ─── Responsive container ───────────────────────────── */
+  .sp-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── Mobile overrides ───────────────────────────────── */
+  @media (max-width: 768px) {
+
+    /* Section vertical padding reduction */
+    .sp-section { padding-top: 72px !important; padding-bottom: 72px !important; }
+
+    /* Container side padding */
+    .sp-container { padding: 0 20px !important; }
+
+    /* FinalCTA section padding */
+    .final-cta { padding: 80px 20px !important; }
+
+    /* Positioning section: 2-col → 1-col */
+    .position-grid {
+      grid-template-columns: 1fr !important;
+      gap: 36px !important;
+    }
+
+    /* Pillars section: 3-col → 1-col */
+    .pillars-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Process section: outer 2-col → 1-col */
+    .process-outer {
+      grid-template-columns: 1fr !important;
+      gap: 48px !important;
+    }
+
+    /* Process steps inner 2-col stays 2-col on tablet */
+    .process-inner {
+      grid-template-columns: 1fr 1fr !important;
+    }
+
+    /* Stats: 4-col → 2-col */
+    .stats-grid {
+      grid-template-columns: 1fr 1fr !important;
+    }
+
+    /* Founder: 2-col → 1-col */
+    .founder-grid {
+      grid-template-columns: 1fr !important;
+      gap: 40px !important;
+    }
+
+    /* Founder portrait: restore natural height */
+    .founder-portrait {
+      max-width: 100% !important;
+      aspect-ratio: 4/3 !important;
+    }
+
+    /* Footer: 4-col → 2-col */
+    .footer-grid {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 36px !important;
+    }
+
+    /* Footer outer padding */
+    .footer-wrap { padding: 56px 20px 32px !important; }
+
+    /* Buttons full-width on mobile */
+    .btn-stack { flex-direction: column !important; align-items: stretch !important; }
+    .btn-stack .btn-primary,
+    .btn-stack .btn-ghost { justify-content: center; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+
+    /* Footer → full single column */
+    .footer-grid { grid-template-columns: 1fr !important; }
+
+    /* Process inner steps → single column */
+    .process-inner { grid-template-columns: 1fr !important; }
+  }
 `;
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -418,12 +504,12 @@ function Hero({ overlayRef, heroRef }) {
         <motion.h1
           className="sp-display"
           style={{
-            fontSize: "clamp(3rem, 8.5vw, 7.5rem)",
+            fontSize: "clamp(2rem, 8vw, 7.5rem)",
             fontWeight: 700,
             lineHeight: 1.0,
             letterSpacing: "-0.03em",
             color: "var(--text)",
-            maxWidth: "900px",
+            maxWidth: "100%",
           }}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -504,8 +590,8 @@ function Positioning() {
       </div>
 
       {/* Statement */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "100px 48px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+      <div className="sp-container" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
+        <div className="position-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
           <div>
             <Reveal>
               <span className="eyebrow" style={{ marginBottom: 20, display: "block" }}>
@@ -514,8 +600,9 @@ function Positioning() {
               </span>
             </Reveal>
             <h2 className="sp-display" style={{
-              fontSize: "clamp(2rem, 3.5vw, 3rem)",
+              fontSize: "clamp(1.8rem, 3.5vw, 3rem)",
               fontWeight: 600, lineHeight: 1.08, color: "var(--text)", letterSpacing: "-0.02em",
+              maxWidth: "100%", wordBreak: "break-word"
             }}>
               {["Reinventing Business", "Through Intelligent", "Systems"].map((line, i) => (
                 <AnimatedLine key={i} staggerIndex={i}>{line}</AnimatedLine>
@@ -548,23 +635,23 @@ function Positioning() {
 
 function Pillars() {
   return (
-    <section className="sp-grain" style={{ background: "var(--bg)", position: "relative", padding: "100px 0" }}>
+    <section className="sp-grain sp-section" style={{ background: "var(--bg)", position: "relative", padding: "100px 0" }}>
       <Orb style={{ left: "10%", top: "20%", width: 400, height: 400, animDelay: 1 }} />
       <Orb style={{ right: "5%", bottom: "10%", width: 320, height: 320, animDelay: 3 }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px", position: "relative", zIndex: 1 }}>
+      <div className="sp-container">
         <Reveal style={{ marginBottom: 64, textAlign: "center" }}>
           <span className="eyebrow" style={{ marginBottom: 16, display: "block", justifyContent: "center" }}>
             <span className="eyebrow-line" />
             What we stand for
             <span className="eyebrow-line" />
           </span>
-          <h2 className="sp-display" style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em" }}>
+          <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", maxWidth: "100%", wordBreak: "break-word" }}>
             Three Pillars. One Promise.
           </h2>
         </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+        <div className="pillars-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
           {pillars.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.1}>
               <div className="pillar-card">
@@ -587,10 +674,10 @@ function Pillars() {
 
 function Services() {
   return (
-    <section id="services" className="sp-grain" style={{ background: "var(--bg-raised)", padding: "100px 0", position: "relative" }}>
+    <section id="services" className="sp-grain sp-section" style={{ background: "var(--bg-raised)", padding: "100px 0", position: "relative" }}>
       <Orb style={{ left: "50%", top: "5%", width: 600, height: 600, animDelay: 0 }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px", position: "relative", zIndex: 1 }}>
+      <div className="sp-container">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 64, flexWrap: "wrap", gap: 24 }}>
           <div>
             <Reveal>
@@ -655,9 +742,9 @@ function ServiceCard({ service, index }) {
 
 function Process() {
   return (
-    <section style={{ background: "var(--bg)", padding: "100px 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+    <section className="sp-section" style={{ background: "var(--bg)", padding: "100px 0" }}>
+      <div className="sp-container">
+        <div className="process-outer" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
           {/* Left */}
           <div>
             <Reveal>
@@ -666,7 +753,7 @@ function Process() {
                 How we work
               </span>
             </Reveal>
-            <h2 className="sp-display" style={{ fontSize: "clamp(2rem, 3.2vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+            <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.1, maxWidth: "100%", wordBreak: "break-word" }}>
               {["Strategy Before", "Execution."].map((l, i) => (
                 <AnimatedLine key={i} staggerIndex={i}>{l}</AnimatedLine>
               ))}
@@ -687,7 +774,7 @@ function Process() {
           </div>
 
           {/* Right: Process grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="process-inner" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             {process.map((step, i) => (
               <Reveal key={step.num} delay={i * 0.1}>
                 <div className="process-step" data-label={step.label}>
@@ -713,11 +800,11 @@ function Process() {
 
 function SocialProof() {
   return (
-    <section className="sp-grain" style={{ background: "var(--bg-raised)", padding: "100px 0", position: "relative" }}>
+    <section className="sp-grain sp-section" style={{ background: "var(--bg-raised)", padding: "100px 0", position: "relative" }}>
       <Orb style={{ left: "20%", top: "20%", width: 500, height: 500, animDelay: 2 }} />
       <Orb style={{ right: "10%", bottom: "10%", width: 350, height: 350, animDelay: 0 }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px", position: "relative", zIndex: 1 }}>
+      <div className="sp-container">
         <Reveal style={{ textAlign: "center", marginBottom: 64 }}>
           <span className="eyebrow" style={{ marginBottom: 16, display: "block", justifyContent: "center" }}>
             <span className="eyebrow-line" />
@@ -729,7 +816,7 @@ function SocialProof() {
           </h2>
         </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 60 }}>
+        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 60 }}>
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.1}>
               <div className="stat-box">
@@ -756,12 +843,12 @@ function SocialProof() {
 
 function Founder() {
   return (
-    <section style={{ background: "var(--bg)", padding: "100px 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 80, alignItems: "center" }}>
+    <section className="sp-section" style={{ background: "var(--bg)", padding: "100px 0" }}>
+      <div className="sp-container">
+        <div className="founder-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 80, alignItems: "center" }}>
           {/* Portrait placeholder */}
           <Reveal>
-            <div style={{
+            <div className="founder-portrait" style={{
               aspectRatio: "3/4", borderRadius: 20,
               background: "var(--surface)",
               border: "1px solid var(--border)",
@@ -794,7 +881,7 @@ function Founder() {
               </span>
             </Reveal>
 
-            <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.15 }}>
+            <h2 className="sp-display" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.15, maxWidth: "100%", wordBreak: "break-word" }}>
               {["A single mission:", "empower businesses to thrive."].map((l, i) => (
                 <AnimatedLine key={i} staggerIndex={i}>{l}</AnimatedLine>
               ))}
@@ -898,7 +985,7 @@ function Founder() {
 
 function FinalCTA() {
   return (
-    <section className="sp-grain" style={{ background: "var(--bg)", padding: "140px 48px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+    <section className="sp-grain final-cta" style={{ background: "var(--bg)", padding: "140px 48px", textAlign: "center", position: "relative", overflow: "hidden" }}>
       <Orb style={{ left: "20%", top: "15%", width: 600, height: 600, animDelay: 0 }} />
       <Orb style={{ right: "10%", bottom: "10%", width: 400, height: 400, animDelay: 2 }} />
 
@@ -911,7 +998,7 @@ function FinalCTA() {
           </span>
         </Reveal>
 
-        <h2 className="sp-display" style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.03em", lineHeight: 1.04 }}>
+        <h2 className="sp-display" style={{ fontSize: "clamp(2rem, 6vw, 5rem)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.03em", lineHeight: 1.04 }}>
           {["Have a project", "in mind?"].map((l, i) => (
             <AnimatedLine key={i} staggerIndex={i}>{l}</AnimatedLine>
           ))}
@@ -926,7 +1013,7 @@ function FinalCTA() {
         </Reveal>
 
         <Reveal delay={0.3}>
-          <div style={{ marginTop: 48, display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <div className="btn-stack" style={{ marginTop: 48, display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="/contact" className="btn-primary" style={{ fontSize: "0.9rem", padding: "18px 40px" }}>
               Start a Conversation →
             </a>
@@ -971,9 +1058,9 @@ function Footer() {
   };
 
   return (
-    <footer style={{ background: "var(--bg-raised)", borderTop: "1px solid var(--border)", padding: "80px 48px 40px" }}>
+    <footer className="footer-wrap" style={{ background: "var(--bg-raised)", borderTop: "1px solid var(--border)", padding: "80px 48px 40px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.5fr", gap: 60, marginBottom: 60 }}>
+        <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.5fr", gap: 60, marginBottom: 60 }}>
           {/* Brand */}
           <div>
             <span className="sp-display" style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--text)", display: "block", marginBottom: 16 }}>
@@ -1098,7 +1185,7 @@ export default function LandingPage() {
     <>
       <style>{CSS}</style>
       <Navbar />
-      <main>
+      <main className="overflow-x-hidden w-full m-0 p-0">
         <Hero overlayRef={overlayRef} heroRef={heroRef} />
         <Positioning />
         <Pillars />

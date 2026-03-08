@@ -107,7 +107,7 @@ export default function Navbar() {
       `}</style>
 
       {/* ── FIXED HEADER ── */}
-      <header className="fixed top-0 inset-x-0 z-[60] flex items-center justify-between px-8 md:px-14 h-[72px]">
+      <header className="fixed top-0 inset-x-0 z-[60] flex items-center justify-between px-6 md:px-14 h-[72px] w-full max-w-[100vw] overflow-hidden">
         <Link
           href="/"
           onClick={close}
@@ -157,10 +157,10 @@ export default function Navbar() {
             exit="exit"
           >
             {/* Ambient glow */}
-            <div className="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-white/[0.02] blur-3xl translate-x-1/3 -translate-y-1/3" />
+            <div className="pointer-events-none absolute top-0 right-0 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] rounded-full bg-white/[0.02] blur-3xl translate-x-1/3 -translate-y-1/3" />
 
             {/* ── DESKTOP: Horizontal layout (lg+) ── */}
-            <div className="hidden lg:flex flex-1 items-center justify-center relative z-10 px-20">
+            <div className="hidden lg:flex flex-1 items-center justify-center relative z-10 px-4 md:px-20 w-full overflow-hidden">
               <motion.div
                 className="w-full flex items-center justify-center gap-0"
                 variants={listVariants}
