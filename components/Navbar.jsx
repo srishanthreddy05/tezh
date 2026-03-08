@@ -107,42 +107,44 @@ export default function Navbar() {
       `}</style>
 
       {/* ── FIXED HEADER ── */}
-      <header className="fixed top-0 inset-x-0 z-[60] flex items-center justify-between px-6 md:px-14 h-[72px] w-full max-w-[100vw] overflow-hidden">
-        <Link
-          href="/"
-          onClick={close}
-          className="nb-display text-xl font-semibold tracking-[0.22em] uppercase text-white select-none"
-        >
-          TEZH<span className="text-white/30">.</span>
-        </Link>
-
-        <button
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="flex items-center gap-3 bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
-        >
-          <motion.span
-            className="nb-sans text-sm text-neutral-300 tracking-wide select-none"
-            animate={{ opacity: open ? 0 : 1 }}
-            transition={{ duration: 0.2 }}
+      <header className="fixed top-0 left-0 right-0 z-[100] w-full box-border h-[72px] flex items-center justify-center">
+        <div className="w-full max-w-[1440px] flex items-center justify-between px-6 md:px-12 lg:px-16 mx-auto box-border">
+          <Link
+            href="/"
+            onClick={close}
+            className="nb-display text-xl font-semibold tracking-[0.22em] uppercase text-white select-none"
           >
-            Menu
-          </motion.span>
-          <div className="flex flex-col items-end justify-center w-6 h-5 gap-0">
+            TEZH<span className="text-white/30">.</span>
+          </Link>
+
+          <button
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="flex items-center gap-3 bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
+          >
             <motion.span
-              className="block h-[1.5px] bg-white rounded-full origin-center"
-              animate={open ? { width: 24, rotate: 45,  translateY: "0.38rem" }
-                            : { width: 24, rotate: 0,   translateY: 0 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            />
-            <motion.span
-              className="block h-[1.5px] bg-white rounded-full origin-center mt-[7px]"
-              animate={open ? { width: 24, rotate: -45, translateY: "-0.38rem" }
-                            : { width: 16, rotate: 0,   translateY: 0 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            />
-          </div>
-        </button>
+              className="nb-sans text-sm text-neutral-300 tracking-wide select-none"
+              animate={{ opacity: open ? 0 : 1 }}
+              transition={{ duration: 0.2 }}
+            >
+              Menu
+            </motion.span>
+            <div className="flex flex-col items-end justify-center w-6 h-5 gap-0">
+              <motion.span
+                className="block h-[1.5px] bg-white rounded-full origin-center"
+                animate={open ? { width: 24, rotate: 45,  translateY: "0.38rem" }
+                              : { width: 24, rotate: 0,   translateY: 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              />
+              <motion.span
+                className="block h-[1.5px] bg-white rounded-full origin-center mt-[7px]"
+                animate={open ? { width: 24, rotate: -45, translateY: "-0.38rem" }
+                              : { width: 16, rotate: 0,   translateY: 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </div>
+          </button>
+        </div>
       </header>
 
       {/* ── FULLSCREEN OVERLAY ── */}
