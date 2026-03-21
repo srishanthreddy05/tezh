@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
   { name: "Home",         link: "/",             label: "01" },
@@ -14,37 +13,11 @@ const menuItems = [
   { name: "Contact",      link: "/contact",      label: "06" },
 ];
 
-/* ─── Variants ─────────────────────────────────────────────────────── */
-
-const overlayVariants = {
-  hidden:  { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
-  exit:    { opacity: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const listVariants = {
-  hidden:  {},
-  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } },
-  exit:    { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
-};
-
-const itemVariants = {
-  hidden:  { opacity: 0, y: -20 },
-  visible: { opacity: 1, y: 0,   transition: { duration: 0.5,  ease: [0.22, 1, 0.36, 1] } },
-  exit:    { opacity: 0, y: -10, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const footerVariants = {
-  hidden:  { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, delay: 0.5, ease: "easeOut" } },
-  exit:    { opacity: 0,       transition: { duration: 0.2 } },
-};
-
 /* ─── Component ─────────────────────────────────────────────────────── */
 
 export default function Navbar() {
-  const [open, setOpen]           = useState(false);
-  const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -52,240 +25,209 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  useEffect(() => { if (!open) setHoveredIdx(null); }, [open]);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const close    = () => setOpen(false);
+  const close = () => setOpen(false);
   const navigate = (e, link) => {
     e.preventDefault();
     close();
-    setTimeout(() => router.push(link), 350);
+    setTimeout(() => router.push(link), 250);
   };
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap');
-        .nb-display { font-family: 'Cormorant Garamond', serif; }
-        .nb-sans    { font-family: 'Montserrat', sans-serif; }
+        .nb-display { font-family: var(--font-cormorant), 'Cormorant Garamond', serif; }
+        .nb-sans    { font-family: var(--font-dm-sans), 'DM Sans', sans-serif; }
 
-        /* Grain */
-        .nb-grain::before {
+        .nb-header {
+          transition: background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease;
+        }
+
+        .nb-header.is-scrolled {
+          background: rgba(255,255,255,0.95);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(201,168,76,0.5);
+        }
+
+        .nb-link {
+          color: #1a1a2e;
+          text-decoration: none;
+          font-size: 0.8rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          position: relative;
+        }
+
+        .nb-link::after {
           content: '';
           position: absolute;
+          left: 0;
+          bottom: -7px;
+          width: 100%;
+          height: 1px;
+          background: #c9a84c;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.3s ease;
+        }
+
+        .nb-link:hover::after {
+          transform: scaleX(1);
+        }
+
+        .nb-header:not(.is-scrolled) .nb-link,
+        .nb-header:not(.is-scrolled) .nb-brand,
+        .nb-header:not(.is-scrolled) .nb-mobile-label {
+          color: #ffffff;
+        }
+
+        .nb-cta {
+          min-height: 44px;
+          padding: 0.65rem 1.1rem;
+          border-radius: 4px;
+          border: none;
+          background: #c9a84c;
+          color: #1a1a2e;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          font-size: 0.7rem;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .nb-overlay {
+          position: fixed;
           inset: 0;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+          background: rgba(7, 9, 18, 0.4);
+          opacity: 0;
           pointer-events: none;
-          opacity: 0.3;
-          z-index: 0;
+          transition: opacity 0.3s ease;
+          z-index: 110;
         }
 
-        /* Desktop item underline grow */
-        .nb-desk-item::after {
-          content: '';
-          display: block;
-          height: 1px;
-          background: rgba(255,255,255,0.4);
-          transform: scaleX(0);
-          transform-origin: left;
-          transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-          margin-top: 6px;
+        .nb-overlay.open {
+          opacity: 1;
+          pointer-events: auto;
         }
-        .nb-desk-item:hover::after,
-        .nb-desk-item.is-active::after { transform: scaleX(1); }
 
-        /* Mobile item underline grow */
-        .nb-mob-item::after {
-          content: '';
-          display: block;
-          height: 1px;
-          background: rgba(255,255,255,0.15);
-          transform: scaleX(0);
-          transform-origin: left;
-          transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        .nb-drawer {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: min(82vw, 380px);
+          height: 100vh;
+          background: #1a1a2e;
+          border-left: 1px solid rgba(201,168,76,0.45);
+          transform: translateX(100%);
+          transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+          z-index: 120;
+          display: flex;
+          flex-direction: column;
+          padding: 1.2rem 1.2rem 1.8rem;
         }
-        .nb-mob-item:hover::after { transform: scaleX(1); }
+
+        .nb-drawer.open {
+          transform: translateX(0);
+        }
+
+        .nb-drawer-link {
+          text-decoration: none;
+          color: #f8f6f2;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          min-height: 52px;
+          border-bottom: 1px solid rgba(201,168,76,0.26);
+          letter-spacing: 0.06em;
+          font-size: 0.95rem;
+          padding: 0.6rem 0;
+        }
+
+        .nb-drawer-link span:first-child {
+          font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+          font-size: 1.6rem;
+        }
+
+        .nb-drawer-link span:last-child {
+          color: #c9a84c;
+          font-family: var(--font-dm-mono), 'DM Mono', monospace;
+          font-size: 0.68rem;
+          letter-spacing: 0.2em;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .nb-header,
+          .nb-overlay,
+          .nb-drawer,
+          .nb-link::after {
+            transition: none;
+          }
+        }
       `}</style>
 
-      {/* ── FIXED HEADER ── */}
-      <header className="fixed top-0 left-0 right-0 z-[100] w-full box-border h-[72px] flex items-center justify-center">
-        <div className="w-full max-w-[1440px] flex items-center justify-between px-6 md:px-12 lg:px-16 mx-auto box-border">
+      <header className={`nb-header fixed top-0 left-0 right-0 z-[100] w-full box-border h-[72px] flex items-center justify-center ${scrolled || open ? "is-scrolled" : ""}`}>
+        <div className="w-full max-w-[1240px] flex items-center justify-between px-6 md:px-10 lg:px-14 mx-auto box-border">
           {!open && (
             <Link
               href="/"
               onClick={close}
-              className="nb-display text-xl font-semibold tracking-[0.22em] uppercase text-white select-none"
+              className="nb-brand nb-display text-xl md:text-2xl font-semibold tracking-[0.18em] uppercase text-[#1A1A2E] select-none"
             >
               TEZH<span className="text-white/30">.</span>
             </Link>
           )}
 
+          <nav className="hidden lg:flex items-center gap-8">
+            {menuItems.map((item) => (
+              <Link key={item.link} href={item.link} className="nb-link nb-sans">
+                {item.name}
+              </Link>
+            ))}
+            <Link href="/contact" className="nb-cta nb-sans shimmer-btn">
+              Let&apos;s Talk
+            </Link>
+          </nav>
+
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex items-center bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
+            className="lg:hidden flex items-center justify-center bg-transparent border border-[#E8E3DC] rounded-sm min-h-[44px] min-w-[44px] p-2 cursor-pointer text-[#1A1A2E]"
           >
-            <motion.span
-              className="nb-sans text-sm text-neutral-300 tracking-wide select-none"
-              animate={{ opacity: open ? 0 : 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              Menu
-            </motion.span>
+            <span className="nb-mobile-label nb-sans text-xs tracking-[0.12em] uppercase">{open ? "Close" : "Menu"}</span>
           </button>
         </div>
       </header>
 
-      {/* ── FULLSCREEN OVERLAY ── */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="nb-overlay"
-            className="nb-grain fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col"
-            variants={overlayVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+      <div className={`nb-overlay ${open ? "open" : ""}`} onClick={close} />
+      <aside className={`nb-drawer ${open ? "open" : ""}`} aria-hidden={!open}>
+        <div className="flex items-center justify-between pb-4 border-b border-[#c9a84c55]">
+          <span className="nb-display text-2xl tracking-[0.1em] text-[#F8F6F2]">TEZH.</span>
+          <button
+            onClick={close}
+            className="nb-sans min-h-[44px] min-w-[44px] border border-[#c9a84c88] text-[#c9a84c] text-xs tracking-[0.14em] uppercase"
           >
-            {/* Ambient glow */}
-            <div className="pointer-events-none absolute top-0 right-0 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] rounded-full bg-white/[0.02] blur-3xl translate-x-1/3 -translate-y-1/3" />
-
-            {/* ── DESKTOP: Split Layout (lg+) ── */}
-            <div className="hidden lg:flex flex-1 relative z-10 w-full max-w-[1440px] mx-auto px-16 xl:px-32 items-center">
-              
-              {/* Left Column: Info/Contact */}
-              <motion.div
-                className="w-[45%] flex flex-col justify-center pr-20 xl:pr-32 border-r border-white/[0.08] h-[60%]"
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] } },
-                  exit: { opacity: 0, transition: { duration: 0.2 } }
-                }}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                <div className="mb-14">
-                  <h4 className="nb-sans text-[0.65rem] tracking-[0.25em] text-white/30 uppercase mb-5">Let's Talk</h4>
-                  <a href="mailto:hello@tezh.com" className="nb-display text-4xl text-white/80 hover:text-white transition-colors duration-300">
-                    hello@tezh.com
-                  </a>
-                </div>
-                
-                <div>
-                  <h4 className="nb-sans text-[0.65rem] tracking-[0.25em] text-white/30 uppercase mb-5">Our Headquarters</h4>
-                  <p className="nb-sans text-sm text-white/60 leading-loose font-light">
-                    Tezh Technologies<br />
-                    123 Innovation Drive<br />
-                    Tech District, NY 10001
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Right Column: Navigation Links */}
-              <motion.div
-                className="w-[55%] flex flex-col gap-8 justify-center items-start pl-16 xl:pl-24"
-                variants={listVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                {menuItems.map((item, i) => {
-                  const isHovered = hoveredIdx === i;
-                  const isDimmed  = hoveredIdx !== null && !isHovered;
-
-                  return (
-                    <motion.div
-                      key={item.name}
-                      variants={itemVariants}
-                      onMouseEnter={() => setHoveredIdx(i)}
-                      onMouseLeave={() => setHoveredIdx(null)}
-                      className="w-fit"
-                    >
-                      <a
-                        href={item.link}
-                        onClick={(e) => navigate(e, item.link)}
-                        className="group flex items-center gap-8 cursor-pointer no-underline"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <span
-                          className="nb-sans text-sm font-medium tracking-[0.2em] transition-colors duration-500 text-left w-6"
-                          style={{ color: isDimmed ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)" }}
-                        >
-                          {item.label}
-                        </span>
-                        <span
-                          className="nb-display text-6xl xl:text-7xl font-light leading-none tracking-tight transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] text-left"
-                          style={{
-                            color: isDimmed ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.95)",
-                            transform: isHovered ? "translateX(24px)" : "translateX(0)",
-                          }}
-                        >
-                          {item.name}
-                        </span>
-                      </a>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </div>
-
-            {/* ── MOBILE: Staggered vertical list (< lg) ── */}
-            <motion.nav
-              className="lg:hidden flex flex-col items-start justify-center flex-1 px-8 md:px-16 relative z-10"
-              variants={listVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              {menuItems.map((item) => (
-                <motion.div
-                  key={item.name}
-                  variants={itemVariants}
-                  className="w-full"
-                >
-                  <a
-                    href={item.link}
-                    onClick={(e) => navigate(e, item.link)}
-                    className="group flex flex-col gap-1 py-4 w-full cursor-pointer no-underline border-b border-white/[0.06]"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <span className="nb-sans text-[0.55rem] font-medium tracking-[0.25em] text-white/30 uppercase">
-                      {item.label}
-                    </span>
-                    <span className="nb-display text-5xl md:text-6xl font-light leading-none tracking-tight text-white/60 group-hover:text-white transition-all duration-300 pt-1 group-hover:translate-x-2">
-                      {item.name}
-                    </span>
-                  </a>
-                </motion.div>
-              ))}
-            </motion.nav>
-
-            {/* ── Footer ── */}
-            <motion.div
-              className="relative z-10 px-8 md:px-14 pb-8 pt-5 flex items-center justify-between border-t border-white/[0.06]"
-              variants={footerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <p className="nb-sans text-[0.6rem] tracking-[0.2em] text-white/20 uppercase">
-                © {new Date().getFullYear()} Tezh
-              </p>
-              <div className="flex gap-6">
-                {["Twitter", "LinkedIn", "Instagram"].map((s) => (
-                  <a
-                    key={s}
-                    href="#"
-                    className="nb-sans text-[0.6rem] tracking-[0.15em] text-white/20 hover:text-white/60 transition-colors duration-300 uppercase"
-                  >
-                    {s}
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Close
+          </button>
+        </div>
+        <nav className="pt-5 flex flex-col gap-1">
+          {menuItems.map((item) => (
+            <a key={item.link} href={item.link} onClick={(e) => navigate(e, item.link)} className="nb-drawer-link">
+              <span>{item.name}</span>
+              <span>{item.label}</span>
+            </a>
+          ))}
+        </nav>
+        <div className="mt-auto pt-8 border-t border-[#c9a84c40]">
+          <p className="nb-sans text-[#f8f6f2b3] text-xs leading-relaxed">hello@tezh.com</p>
+          <p className="nb-sans text-[#c9a84c] text-[0.62rem] tracking-[0.2em] uppercase mt-2">Tezh Technologies</p>
+        </div>
+      </aside>
     </>
   );
 }

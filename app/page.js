@@ -1,58 +1,54 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import Navbar from "../components/Navbar";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-
-gsap.registerPlugin(ScrollTrigger);
-
-/* ═══════════════════════════════════════════════════════════════════════
-   DATA
-═══════════════════════════════════════════════════════════════════════ */
 
 const services = [
   {
-    num: "01", icon: "⬡",
+    num: "01",
+    icon: "⬡",
     title: "IT Services",
-    line: "Your Business Backbone — Secure, Scalable, Future-Ready.",
+    line: "Your Business Backbone - Secure, Scalable, Future-Ready.",
     href: "/services/it-services",
   },
   {
-    num: "02", icon: "◈",
+    num: "02",
+    icon: "◈",
     title: "Automation Solutions",
     line: "Work Smarter. Let intelligent bots handle the rest.",
     href: "/services/automation",
   },
   {
-    num: "03", icon: "◎",
+    num: "03",
+    icon: "◎",
     title: "Data Analytics",
     line: "Turn your data into your most powerful competitive edge.",
     href: "/services/data-analytics",
   },
   {
-    num: "04", icon: "◉",
+    num: "04",
+    icon: "◉",
     title: "AI Agents",
-    line: "Agents that learn, understand, and act — 24/7.",
+    line: "Agents that learn, understand, and act - 24/7.",
     href: "/services/ai-agents",
   },
   {
-    num: "05", icon: "⬡",
+    num: "05",
+    icon: "⬡",
     title: "App Development",
     line: "Secure, scalable applications built around your users.",
     href: "/services/app-development",
   },
   {
-    num: "06", icon: "◈",
+    num: "06",
+    icon: "◈",
     title: "Digital Transformation",
     line: "Reshape the way your business operates and grows.",
     href: "/services/digital-transformation",
   },
   {
-    num: "07", icon: "◎",
+    num: "07",
+    icon: "◎",
     title: "Digital Marketing",
     line: "Data-driven growth across every channel that matters.",
     href: "/services/digital-marketing",
@@ -85,578 +81,591 @@ const process = [
 ];
 
 const stats = [
-  { value: "10+", label: "Years of Service" },
-  { value: "50+", label: "Projects Delivered" },
-  { value: "6+",  label: "Industries Served" },
-  { value: "100%", label: "Client Retention" },
+  { value: 10, suffix: "+", label: "Years of Service" },
+  { value: 50, suffix: "+", label: "Projects Delivered" },
+  { value: 6, suffix: "+", label: "Industries Served" },
+  { value: 100, suffix: "%", label: "Client Retention" },
 ];
 
-/* ═══════════════════════════════════════════════════════════════════════
-   GLOBAL CSS
-═══════════════════════════════════════════════════════════════════════ */
-
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
-
-  :root {
-    --bg:        #0e0f11;
-    --bg-raised: #13151a;
-    --surface:   #1a1d23;
-    --border:    rgba(255,255,255,0.06);
-    --text:      rgba(255,255,255,0.92);
-    --muted:     rgba(255,255,255,0.38);
-    --faint:     rgba(255,255,255,0.10);
-    --accent:    #c6cad1;
-    --gold:      rgba(220,195,145,0.9);
-  }
-
-  html { scroll-behavior: auto; }
-  body {
+  .hp-page {
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
 
-  .sp-display { font-family: 'Syne', sans-serif; }
-  .sp-body    { font-family: 'DM Sans', sans-serif; }
-
-  /* Grain overlay */
-  .sp-grain::before {
-    content: ''; position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0;
+  .hp-section {
+    position: relative;
+    padding: clamp(68px, 10vw, 120px) clamp(20px, 4.5vw, 56px);
   }
 
-  /* Subtle grid */
-  .sp-grid {
-    background-image:
-      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-    background-size: 80px 80px;
-  }
-
-  /* Divider */
-  .sp-hr {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07) 30%, rgba(255,255,255,0.07) 70%, transparent);
-    border: none;
-  }
-
-  /* Service card */
-  .svc-card {
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 32px 28px;
-    background: var(--bg-raised);
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column; gap: 16px;
-    transition: background 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
-    cursor: default;
-    text-decoration: none;
-  }
-  .svc-card:hover {
-    background: var(--surface);
-    border-color: rgba(255,255,255,0.14);
-    transform: translateY(-5px);
-  }
-  .svc-card::before {
-    content: ''; position: absolute; top: 0; left: -120%;
-    width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.035), transparent);
-    transition: left 0.55s ease; pointer-events: none;
-  }
-  .svc-card:hover::before { left: 160%; }
-  .svc-bar {
-    position: absolute; bottom: 0; left: 0;
-    height: 2px; width: 0;
-    background: linear-gradient(90deg, rgba(255,255,255,0.2), transparent);
-    transition: width 0.45s cubic-bezier(0.22,1,0.36,1);
-  }
-  .svc-card:hover .svc-bar { width: 100%; }
-  .svc-arrow {
-    opacity: 0; transform: translateX(-6px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-  .svc-card:hover .svc-arrow { opacity: 1; transform: translateX(0); }
-
-  /* Pillar card */
-  .pillar-card {
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 36px 32px;
-    background: var(--surface);
-    position: relative; overflow: hidden;
-    transition: border-color 0.3s ease, transform 0.3s ease;
-  }
-  .pillar-card:hover {
-    border-color: rgba(255,255,255,0.14);
-    transform: translateY(-4px);
-  }
-  .pillar-line {
-    position: absolute; bottom: 0; left: 0;
-    height: 1px; width: 0;
-    background: rgba(255,255,255,0.1);
-    transition: width 0.4s ease;
-  }
-  .pillar-card:hover .pillar-line { width: 100%; }
-
-  /* Process step */
-  .process-step {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px 24px;
-    background: var(--bg-raised);
-    text-align: center;
-    transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
-    position: relative; overflow: hidden;
-  }
-  .process-step:hover {
-    background: var(--surface);
-    border-color: rgba(255,255,255,0.12);
-    transform: translateY(-3px);
-  }
-  .process-step::after {
-    content: attr(data-label);
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-size: 4rem; font-weight: 800;
-    color: rgba(255,255,255,0.02);
-    pointer-events: none;
-    letter-spacing: -0.05em;
-  }
-
-  /* Stat */
-  .stat-box {
-    text-align: center;
-    padding: 32px 24px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--bg-raised);
-    transition: border-color 0.3s ease, transform 0.3s ease;
-  }
-  .stat-box:hover {
-    border-color: rgba(255,255,255,0.12);
-    transform: translateY(-3px);
-  }
-
-  /* CTA primary */
-  .btn-primary {
-    position: relative; overflow: hidden;
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 15px 34px; border-radius: 999px;
-    background: rgba(255,255,255,0.92);
-    color: #0e0f11;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.82rem; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .btn-primary:hover {
-    background: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(255,255,255,0.12);
-  }
-  .btn-primary::before {
-    content: ''; position: absolute; top: 0; left: -100%;
-    width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.05), transparent);
-    transition: left 0.5s ease;
-  }
-  .btn-primary:hover::before { left: 150%; }
-
-  /* CTA ghost */
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 15px 34px; border-radius: 999px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
-    text-decoration: none;
-    transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  }
-  .btn-ghost:hover {
-    border-color: rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.8);
-    transform: translateY(-2px);
-  }
-
-  /* Eyebrow label */
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.6rem; letter-spacing: 0.32em;
-    text-transform: uppercase; color: rgba(255,255,255,0.28);
-  }
-  .eyebrow-line { display: inline-block; width: 32px; height: 1px; background: rgba(255,255,255,0.15); }
-
-  /* Orb */
-  .orb {
-    position: absolute; border-radius: 50%;
-    background: radial-gradient(circle, rgba(175,180,200,0.065) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  /* Marquee */
-  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; will-change: transform; max-width: 100vw; }
-  .marquee-track:hover { animation-play-state: paused; }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(80,80,80,0.5); border-radius: 6px; }
-
-  /* ─── Responsive container ───────────────────────────── */
-  .sp-container {
+  .hp-container {
     max-width: 1200px;
-    width: 100%;
     margin: 0 auto;
-    padding: 0 48px;
+    width: 100%;
+  }
+
+  .hp-rule {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(90deg, transparent, var(--accent) 24%, var(--accent) 76%, transparent);
+  }
+
+  .hp-eyebrow {
+    font-family: var(--font-dm-mono), "DM Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.68rem;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hp-eyebrow::before,
+  .hp-eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.75;
+  }
+
+  .hp-hero {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: clamp(96px, 12vw, 140px) clamp(20px, 4.5vw, 56px) clamp(74px, 8vw, 92px);
+    text-align: center;
+    background: var(--bg);
+    position: relative;
+    isolation: isolate;
+  }
+
+  .hp-hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 1;
+  }
+
+  .hp-hero::before {
+    content: none;
+  }
+
+  .hp-hero .hp-container {
     position: relative;
     z-index: 1;
   }
 
-  /* ─── Mobile overrides ───────────────────────────────── */
-  @media (max-width: 768px) {
-
-    /* Section vertical padding reduction */
-    .sp-section { padding-top: 72px !important; padding-bottom: 72px !important; }
-
-    /* Container side padding */
-    .sp-container { padding: 0 20px !important; }
-
-    /* FinalCTA section padding */
-    .final-cta { padding: 80px 20px !important; }
-
-    /* Positioning section: 2-col → 1-col */
-    .position-grid {
-      grid-template-columns: 1fr !important;
-      gap: 36px !important;
-    }
-
-    /* Pillars section: 3-col → 1-col */
-    .pillars-grid {
-      grid-template-columns: 1fr !important;
-    }
-
-    /* Process section: outer 2-col → 1-col */
-    .process-outer {
-      grid-template-columns: 1fr !important;
-      gap: 48px !important;
-    }
-
-    /* Process steps inner 2-col stays 2-col on tablet */
-    .process-inner {
-      grid-template-columns: 1fr 1fr !important;
-    }
-
-    /* Stats: 4-col → 2-col */
-    .stats-grid {
-      grid-template-columns: 1fr 1fr !important;
-    }
-
-    /* Founder: 2-col → 1-col */
-    .founder-grid {
-      grid-template-columns: 1fr !important;
-      gap: 40px !important;
-    }
-
-    /* Founder portrait: restore natural height */
-    .founder-portrait {
-      max-width: 100% !important;
-      aspect-ratio: 4/3 !important;
-    }
-
-    /* Footer: 4-col → 2-col */
-    .footer-grid {
-      grid-template-columns: 1fr 1fr !important;
-      gap: 36px !important;
-    }
-
-    /* Footer outer padding */
-    .footer-wrap { padding: 56px 20px 32px !important; }
-
-    /* Buttons full-width on mobile */
-    .btn-stack { flex-direction: column !important; align-items: stretch !important; }
-    .btn-stack .btn-primary,
-    .btn-stack .btn-ghost { justify-content: center; text-align: center; }
+  .hp-hero-title {
+    margin: 1.2rem auto 0;
+    max-width: 960px;
+    font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+    font-size: clamp(2.5rem, 7.5vw, 6.4rem);
+    line-height: 0.96;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+    animation: hpFadeUp 0.6s ease both;
   }
 
-  @media (max-width: 480px) {
+  .hp-hero-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
 
-    /* Footer → full single column */
-    .footer-grid { grid-template-columns: 1fr !important; }
+  .hp-title-underline {
+    width: min(360px, 52vw);
+    height: 2px;
+    margin: 1.1rem auto 0;
+    background: var(--accent);
+    transform-origin: left;
+    animation: hpDrawLine 0.8s ease 0.25s both;
+  }
 
-    /* Process inner steps → single column */
-    .process-inner { grid-template-columns: 1fr !important; }
+  .hp-sub {
+    margin: 1.3rem auto 0;
+    max-width: 620px;
+    font-size: clamp(1rem, 1.7vw, 1.18rem);
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.75;
+  }
+
+  .hp-hero .hp-btn {
+    color: #ffffff;
+  }
+
+  .hp-hero .hp-btn-secondary {
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .hp-actions {
+    margin-top: 2.2rem;
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hp-btn {
+    min-height: 44px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.45rem;
+    border-radius: 4px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    font-weight: 700;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .hp-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .hp-btn-primary {
+    background: var(--accent);
+    color: var(--primary);
+    border: 1px solid var(--accent);
+  }
+
+  .hp-btn-secondary {
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    background: transparent;
+  }
+
+  .hp-ticker-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    background: #fbf9f5;
+  }
+
+  .hp-ticker {
+    display: flex;
+    width: max-content;
+    animation: hpMarquee 24s linear infinite;
+  }
+
+  .hp-ticker span {
+    padding: 0.88rem 1.5rem;
+    font-family: var(--font-dm-mono), "DM Mono", monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+
+  .hp-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(24px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .hp-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .hp-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .hp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem 1.25rem;
+    position: relative;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  }
+
+  .hp-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.24s ease;
+  }
+
+  .hp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.09);
+    border-color: #dbc98d;
+  }
+
+  .hp-card:hover::before {
+    width: 3px;
+  }
+
+  .hp-service-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .hp-icon {
+    color: var(--accent);
+    font-size: 1.15rem;
+  }
+
+  .hp-num {
+    font-family: var(--font-dm-mono), "DM Mono", monospace;
+    font-size: 0.62rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+  }
+
+  .hp-title {
+    font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+    color: var(--primary);
+    font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+    margin: 0.5rem 0;
+  }
+
+  .hp-body {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 0.93rem;
+  }
+
+  .hp-process {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .hp-step {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+    padding: 1.2rem;
+    text-align: center;
+  }
+
+  .hp-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  }
+
+  .hp-stat {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .hp-stat:last-child {
+    border-right: 0;
+  }
+
+  .hp-stat-value {
+    font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+    color: var(--accent);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+  }
+
+  .hp-footer {
+    background: #1a1a2e;
+    border-top: 1px solid var(--accent);
+    color: #f8f6f2;
+    padding: clamp(56px, 8vw, 82px) clamp(20px, 4.5vw, 56px) 28px;
+  }
+
+  .hp-footer h4,
+  .hp-footer a,
+  .hp-footer p,
+  .hp-footer span {
+    color: #f8f6f2;
+  }
+
+  .hp-footer a {
+    text-decoration: none;
+  }
+
+  .hp-footer-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.4fr;
+    gap: 26px;
+  }
+
+  .hp-cta-note {
+    color: #8f8a81;
+    font-size: 0.72rem;
+    margin-top: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  @keyframes hpFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+      letter-spacing: 0.11em;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      letter-spacing: 0.02em;
+    }
+  }
+
+  @keyframes hpDrawLine {
+    from {
+      transform: scaleX(0);
+      opacity: 0;
+    }
+    to {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes hpMarquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 1024px) {
+    .hp-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hp-footer-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .hp-grid-2,
+    .hp-grid-3,
+    .hp-process,
+    .hp-stats,
+    .hp-cards,
+    .hp-footer-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hp-stat {
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hp-stat:last-child {
+      border-bottom: 0;
+    }
+
+    .hp-btn {
+      width: 100%;
+    }
+
+    .hp-ticker {
+      animation-duration: 34s;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hp-hero-title,
+    .hp-title-underline,
+    .hp-ticker {
+      animation: none;
+    }
+
+    .hp-card,
+    .hp-btn {
+      transition: none;
+    }
   }
 `;
 
-/* ═══════════════════════════════════════════════════════════════════════
-   HELPERS
-═══════════════════════════════════════════════════════════════════════ */
-
-function Reveal({ children, delay = 0, y = 30, className = "", as = "div" }) {
+function useInViewOnce(options) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-64px" });
-  const Tag = motion[as] || motion.div;
-  return (
-    <Tag
-      ref={ref}
-      initial={{ opacity: 0, y }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.78, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
-    >
-      {children}
-    </Tag>
-  );
-}
-
-function Orb({ style = {} }) {
-  return (
-    <motion.div
-      className="orb"
-      style={style}
-      animate={{ scale: [1, 1.14, 1], opacity: [0.8, 1.3, 0.8] }}
-      transition={{ duration: 8 + (style.animDelay || 0), repeat: Infinity, ease: "easeInOut", delay: style.animDelay || 0 }}
-    />
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   GSAP ANIMATED LINES (kept from original)
-═══════════════════════════════════════════════════════════════════════ */
-
-function AnimatedLine({ children, staggerIndex = 0 }) {
-  const wrapRef = useRef(null);
-  const innerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (!innerRef.current || !wrapRef.current) return;
-    gsap.set(innerRef.current, { y: "110%", opacity: 0 });
-    const st = ScrollTrigger.create({
-      trigger: wrapRef.current, start: "top 88%",
-      onEnter: () => gsap.to(innerRef.current, { y: "0%", opacity: 1, duration: 0.85, ease: "power3.out", delay: staggerIndex * 0.1 }),
-      onLeaveBack: () => gsap.to(innerRef.current, { y: "110%", opacity: 0, duration: 0.6, ease: "power3.in", delay: staggerIndex * 0.05 }),
-    });
-    return () => st.kill();
-  }, [staggerIndex]);
+    if (!ref.current) return;
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px", ...options }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [options]);
+
+  return { ref, isVisible };
+}
+
+function Reveal({ children, className = "" }) {
+  const { ref, isVisible } = useInViewOnce();
   return (
-    <div ref={wrapRef} style={{ overflow: "hidden", display: "block" }}>
-      <span ref={innerRef} style={{ display: "block" }}>{children}</span>
+    <div ref={ref} className={`reveal ${isVisible ? "is-visible" : ""} ${className}`}>
+      {children}
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 1 — HERO
-═══════════════════════════════════════════════════════════════════════ */
+function CountUp({ value, suffix }) {
+  const { ref, isVisible } = useInViewOnce();
+  const [display, setDisplay] = useState(0);
 
-function Hero({ overlayRef, heroRef }) {
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const duration = 1200;
+    const start = performance.now();
+    let rafId = 0;
+
+    const step = (time) => {
+      const t = Math.min((time - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setDisplay(Math.floor(eased * value));
+      if (t < 1) rafId = requestAnimationFrame(step);
+    };
+
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [isVisible, value]);
+
   return (
-    <section
-      ref={heroRef}
-      className="sp-grain sp-grid relative h-screen w-full flex items-center justify-center overflow-hidden"
-      style={{ background: "var(--bg)" }}
-    >
-      {/* Video background */}
+    <span ref={ref} className="hp-stat-value">
+      {display}
+      {suffix}
+    </span>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="hp-hero">
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="hp-hero-video"
         src="/videos/liquid.mp4"
-        autoPlay loop muted playsInline
-        style={{ opacity: 0.55 }}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
       />
-
-      {/* Scroll-driven overlay */}
-      <div
-        ref={overlayRef}
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, rgba(14,15,17,0.35) 0%, rgba(14,15,17,0.7) 100%)", opacity: 0 }}
-      />
-
-      {/* Decorative orbs */}
-      <Orb style={{ left: "8%", top: "15%", width: 480, height: 480, animDelay: 0 }} />
-      <Orb style={{ right: "6%", top: "40%", width: 360, height: 360, animDelay: 3 }} />
-
-      <div className="relative z-20 flex flex-col items-center justify-center w-full h-full px-6 text-center">
-        {/* Eyebrow */}
-        <motion.span
-          className="eyebrow mb-8"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <span className="eyebrow-line" />
-          Tezh Technologies
-          <span className="eyebrow-line" />
-        </motion.span>
-
-        {/* Headline */}
-        <motion.h1
-          className="sp-display"
-          style={{
-            fontSize: "clamp(2rem, 8vw, 7.5rem)",
-            fontWeight: 700,
-            lineHeight: 1.0,
-            letterSpacing: "-0.03em",
-            color: "var(--text)",
-            maxWidth: "100%",
-          }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        >
-          The Future of Business —{" "}
-          <em style={{ fontStyle: "italic", fontWeight: 300, color: "var(--accent)" }}>Now.</em>
-        </motion.h1>
-
-        {/* Subline */}
-        <motion.p
-          className="sp-body"
-          style={{
-            marginTop: "24px",
-            fontSize: "clamp(1rem, 1.8vw, 1.2rem)",
-            color: "rgba(255,255,255,0.48)",
-            maxWidth: "560px",
-            lineHeight: 1.65,
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
+      <div className="hp-container">
+        <span className="hp-eyebrow">Tezh Technologies</span>
+        <h1 className="hp-hero-title">
+          The Future of Business - <em>Now.</em>
+        </h1>
+        <div className="hp-title-underline" />
+        <p className="hp-sub">
           We build intelligent systems that transform how companies operate,
           scale, and compete in the digital era.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          style={{ marginTop: "48px", display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center" }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55 }}
-        >
-          <a href="/contact" className="btn-primary">Get a Free Consultation →</a>
-          <a href="#services" className="btn-ghost">Explore Services ↓</a>
-        </motion.div>
+        </p>
+        <div className="hp-actions">
+          <a href="/contact" className="hp-btn hp-btn-primary shimmer-btn">Get a Free Consultation</a>
+          <a href="#services" className="hp-btn hp-btn-secondary">Explore Services</a>
+        </div>
       </div>
-
-      {/* Scroll cue */}
-      <motion.div
-        style={{
-          position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: 8, zIndex: 30,
-        }}
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <span className="sp-body" style={{ fontSize: "0.48rem", letterSpacing: "0.32em", textTransform: "uppercase", color: "rgba(255,255,255,0.18)" }}>Scroll</span>
-        <div style={{ width: 1, height: 40, background: "linear-gradient(to bottom, rgba(255,255,255,0.2), transparent)" }} />
-      </motion.div>
     </section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 2 — POSITIONING (Marquee + Statement)
-═══════════════════════════════════════════════════════════════════════ */
-
 function Positioning() {
-  const tags = ["Born in Technology", "Forged in Strategy", "Wired for Innovation", "Built for Scale", "Driven by Results", "Born in Technology", "Forged in Strategy", "Wired for Innovation", "Built for Scale", "Driven by Results"];
+  const tags = useMemo(
+    () => [
+      "Born in Technology",
+      "Forged in Strategy",
+      "Wired for Innovation",
+      "Built for Scale",
+      "Driven by Results",
+      "Born in Technology",
+      "Forged in Strategy",
+      "Wired for Innovation",
+      "Built for Scale",
+      "Driven by Results",
+    ],
+    []
+  );
 
   return (
-    <section style={{ background: "var(--bg-raised)", overflow: "hidden" }}>
-      {/* Marquee strip */}
-      <div style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "14px 0", overflow: "hidden" }}>
-        <div className="marquee-track">
+    <section>
+      <div className="hp-ticker-wrap">
+        <div className="hp-ticker">
           {[...tags, ...tags].map((t, i) => (
-            <span key={i} className="sp-display" style={{
-              fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.25em",
-              textTransform: "uppercase", color: "var(--faint)",
-              whiteSpace: "nowrap", padding: "0 40px",
-            }}>
-              {t} <span style={{ color: "rgba(255,255,255,0.08)", margin: "0 8px" }}>✦</span>
-            </span>
+            <span key={`${t}-${i}`}>{t} ·</span>
           ))}
         </div>
       </div>
-
-      {/* Statement */}
-      <div className="sp-container" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
-        <div className="position-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
-          <div>
-            <Reveal>
-              <span className="eyebrow" style={{ marginBottom: 20, display: "block" }}>
-                <span className="eyebrow-line" />
-                Strategic Positioning
-              </span>
-            </Reveal>
-            <h2 className="sp-display" style={{
-              fontSize: "clamp(1.8rem, 3.5vw, 3rem)",
-              fontWeight: 600, lineHeight: 1.08, color: "var(--text)", letterSpacing: "-0.02em",
-              maxWidth: "100%", wordBreak: "break-word"
-            }}>
-              {["Reinventing Business", "Through Intelligent", "Systems"].map((line, i) => (
-                <AnimatedLine key={i} staggerIndex={i}>{line}</AnimatedLine>
-              ))}
-            </h2>
-          </div>
-          <div>
-            <Reveal delay={0.15}>
-              <p className="sp-body" style={{ fontSize: "1.05rem", lineHeight: 1.75, color: "var(--muted)", marginBottom: 28 }}>
+      <div className="hp-section">
+        <div className="hp-container hp-grid-2">
+          <Reveal>
+            <div>
+              <span className="hp-eyebrow">Strategic Positioning</span>
+              <h2 className="hp-title" style={{ fontSize: "clamp(2rem, 5vw, 3.4rem)", marginTop: "0.9rem" }}>
+                Reinventing Business Through Intelligent Systems
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal>
+            <div>
+              <p className="hp-body">
                 We go beyond delivering software. We create future-ready technologies that fuel growth,
-                unlock opportunities, and transform how our clients operate — with unwavering commitment
+                unlock opportunities, and transform how our clients operate - with unwavering commitment
                 to quality, scalability, and measurable outcomes.
               </p>
-            </Reveal>
-            <Reveal delay={0.25}>
-              <a href="/about" className="btn-ghost" style={{ fontSize: "0.82rem" }}>
-                Our Story →
-              </a>
-            </Reveal>
-          </div>
+              <div style={{ marginTop: "1rem" }}>
+                <a href="/about" className="hp-btn hp-btn-secondary">Our Story</a>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 3 — THREE PILLARS
-═══════════════════════════════════════════════════════════════════════ */
 
 function Pillars() {
   return (
-    <section className="sp-grain sp-section" style={{ background: "var(--bg)", position: "relative", padding: "100px 0" }}>
-      <Orb style={{ left: "10%", top: "20%", width: 400, height: 400, animDelay: 1 }} />
-      <Orb style={{ right: "5%", bottom: "10%", width: 320, height: 320, animDelay: 3 }} />
-
-      <div className="sp-container">
-        <Reveal style={{ marginBottom: 64, textAlign: "center" }}>
-          <span className="eyebrow" style={{ marginBottom: 16, display: "block", justifyContent: "center" }}>
-            <span className="eyebrow-line" />
-            What we stand for
-            <span className="eyebrow-line" />
-          </span>
-          <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", maxWidth: "100%", wordBreak: "break-word" }}>
-            Three Pillars. One Promise.
-          </h2>
+    <section className="hp-section">
+      <div className="hp-container">
+        <Reveal>
+          <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+            <span className="hp-eyebrow">What we stand for</span>
+            <h2 className="hp-title" style={{ fontSize: "clamp(2rem, 4.8vw, 3.2rem)", marginTop: "0.9rem" }}>
+              Three Pillars. One Promise.
+            </h2>
+          </div>
         </Reveal>
-
-        <div className="pillars-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
-          {pillars.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.1}>
-              <div className="pillar-card">
-                <div className="pillar-line" />
-                <span style={{ fontSize: "1.4rem", color: "var(--faint)", display: "block", marginBottom: 20 }}>{p.icon}</span>
-                <h3 className="sp-display" style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text)", marginBottom: 12 }}>{p.title}</h3>
-                <p className="sp-body" style={{ fontSize: "0.9rem", lineHeight: 1.7, color: "var(--muted)" }}>{p.desc}</p>
-              </div>
+        <div className="hp-grid-3">
+          {pillars.map((p) => (
+            <Reveal key={p.title}>
+              <article className="hp-card">
+                <div className="hp-icon">{p.icon}</div>
+                <h3 className="hp-title">{p.title}</h3>
+                <p className="hp-body">{p.desc}</p>
+              </article>
             </Reveal>
           ))}
         </div>
@@ -664,375 +673,169 @@ function Pillars() {
     </section>
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 4 — SERVICES GRID
-═══════════════════════════════════════════════════════════════════════ */
 
 function Services() {
   return (
-    <section id="services" className="sp-grain sp-section" style={{ background: "var(--bg-raised)", padding: "100px 0", position: "relative" }}>
-      <Orb style={{ left: "50%", top: "5%", width: 600, height: 600, animDelay: 0 }} />
-
-      <div className="sp-container">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 64, flexWrap: "wrap", gap: 24 }}>
-          <div>
-            <Reveal>
-              <span className="eyebrow" style={{ marginBottom: 12, display: "block" }}>
-                <span className="eyebrow-line" />
-                What we build
-              </span>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h2 className="sp-display" style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em" }}>
-                Our Solutions
-              </h2>
-            </Reveal>
+    <section id="services" className="hp-section" style={{ background: "#fbf9f5" }}>
+      <div className="hp-container">
+        <Reveal>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
+            <div>
+              <span className="hp-eyebrow">What we build</span>
+              <h2 className="hp-title" style={{ fontSize: "clamp(2rem, 4.7vw, 3.2rem)", marginTop: "0.9rem" }}>Our Solutions</h2>
+            </div>
+            <a href="/services" className="hp-btn hp-btn-secondary">View All Services</a>
           </div>
-          <Reveal delay={0.15}>
-            <a href="/services" className="btn-ghost" style={{ fontSize: "0.82rem" }}>View All Services →</a>
-          </Reveal>
-        </div>
+        </Reveal>
 
-        <hr className="sp-hr" style={{ marginBottom: 48 }} />
+        <hr className="hp-rule" style={{ margin: "1.8rem 0 1.2rem" }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-          {services.map((s, i) => (
-            <ServiceCard key={s.num} service={s} index={i} />
+        <div className="hp-cards">
+          {services.map((s) => (
+            <Reveal key={s.num}>
+              <Link href={s.href} className="hp-service-link">
+                <article className="hp-card">
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span className="hp-icon">{s.icon}</span>
+                    <span className="hp-num">{s.num}</span>
+                  </div>
+                  <h3 className="hp-title">{s.title}</h3>
+                  <p className="hp-body">{s.line}</p>
+                  <p style={{ marginTop: "1rem", color: "var(--accent)", fontFamily: "var(--font-dm-mono), DM Mono, monospace", fontSize: "0.68rem", letterSpacing: "0.16em", textTransform: "uppercase" }}>Explore</p>
+                </article>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </div>
     </section>
   );
 }
-
-function ServiceCard({ service, index }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-
-  return (
-    <motion.div ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: (index % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <Link href={service.href} className="svc-card" style={{ display: "flex", flexDirection: "column", gap: 16, textDecoration: "none" }}>
-        <div className="svc-bar" />
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <span style={{ fontSize: "1.2rem", color: "var(--faint)" }}>{service.icon}</span>
-          <span className="sp-body" style={{ fontSize: "0.55rem", letterSpacing: "0.25em", color: "var(--faint)" }}>{service.num}</span>
-        </div>
-        <h3 className="sp-display" style={{ fontSize: "1.05rem", fontWeight: 600, color: "var(--text)" }}>{service.title}</h3>
-        <p className="sp-body" style={{ fontSize: "0.82rem", color: "var(--muted)", lineHeight: 1.6, flex: 1 }}>{service.line}</p>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 8 }}>
-          <span className="sp-body" style={{ fontSize: "0.72rem", color: "var(--faint)", letterSpacing: "0.08em" }}>Explore</span>
-          <span className="svc-arrow" style={{ color: "var(--muted)", fontSize: "0.8rem" }}>→</span>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 5 — CONSULTATIVE PROCESS
-═══════════════════════════════════════════════════════════════════════ */
 
 function Process() {
   return (
-    <section className="sp-section" style={{ background: "var(--bg)", padding: "100px 0" }}>
-      <div className="sp-container">
-        <div className="process-outer" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
-          {/* Left */}
+    <section className="hp-section">
+      <div className="hp-container hp-grid-2">
+        <Reveal>
           <div>
-            <Reveal>
-              <span className="eyebrow" style={{ marginBottom: 16, display: "block" }}>
-                <span className="eyebrow-line" />
-                How we work
-              </span>
-            </Reveal>
-            <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.1, maxWidth: "100%", wordBreak: "break-word" }}>
-              {["Strategy Before", "Execution."].map((l, i) => (
-                <AnimatedLine key={i} staggerIndex={i}>{l}</AnimatedLine>
-              ))}
+            <span className="hp-eyebrow">How we work</span>
+            <h2 className="hp-title" style={{ fontSize: "clamp(2rem, 4.4vw, 3rem)", marginTop: "0.9rem" }}>
+              Strategy Before Execution.
             </h2>
-            <Reveal delay={0.2}>
-              <p className="sp-body" style={{ marginTop: 24, fontSize: "0.95rem", lineHeight: 1.75, color: "var(--muted)", maxWidth: 420 }}>
-                We don't just build — we diagnose first. Our consultative approach ensures
-                that every solution we deliver is perfectly aligned with your unique business
-                needs and long-term vision. We ask the hard questions so we can give you
-                the right answers.
-              </p>
-            </Reveal>
-            <Reveal delay={0.3}>
-              <a href="/contact" className="btn-primary" style={{ marginTop: 36, display: "inline-flex" }}>
-                Start a Conversation →
-              </a>
-            </Reveal>
+            <p className="hp-body" style={{ marginTop: "1rem" }}>
+              We don&apos;t just build - we diagnose first. Our consultative approach ensures
+              that every solution we deliver is perfectly aligned with your unique business
+              needs and long-term vision. We ask the hard questions so we can give you
+              the right answers.
+            </p>
+            <div style={{ marginTop: "1.1rem" }}>
+              <a href="/contact" className="hp-btn hp-btn-primary shimmer-btn">Start a Conversation</a>
+            </div>
           </div>
+        </Reveal>
 
-          {/* Right: Process grid */}
-          <div className="process-inner" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-            {process.map((step, i) => (
-              <Reveal key={step.num} delay={i * 0.1}>
-                <div className="process-step" data-label={step.label}>
-                  <span className="sp-body" style={{ fontSize: "0.55rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--faint)", display: "block", marginBottom: 10 }}>
-                    {step.num}
-                  </span>
-                  <span className="sp-display" style={{ fontSize: "1.15rem", fontWeight: 600, color: "var(--text)" }}>
-                    {step.label}
-                  </span>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+        <div className="hp-process">
+          {process.map((step) => (
+            <Reveal key={step.num}>
+              <article className="hp-step">
+                <div className="hp-num">{step.num}</div>
+                <h3 className="hp-title" style={{ margin: "0.5rem 0 0" }}>{step.label}</h3>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 6 — SOCIAL PROOF / STATS
-═══════════════════════════════════════════════════════════════════════ */
 
 function SocialProof() {
   return (
-    <section className="sp-grain sp-section" style={{ background: "var(--bg-raised)", padding: "100px 0", position: "relative" }}>
-      <Orb style={{ left: "20%", top: "20%", width: 500, height: 500, animDelay: 2 }} />
-      <Orb style={{ right: "10%", bottom: "10%", width: 350, height: 350, animDelay: 0 }} />
-
-      <div className="sp-container">
-        <Reveal style={{ textAlign: "center", marginBottom: 64 }}>
-          <span className="eyebrow" style={{ marginBottom: 16, display: "block", justifyContent: "center" }}>
-            <span className="eyebrow-line" />
-            By the numbers
-            <span className="eyebrow-line" />
-          </span>
-          <h2 className="sp-display" style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em" }}>
-            Results That Speak
-          </h2>
+    <section className="hp-section" style={{ background: "#fbf9f5" }}>
+      <div className="hp-container">
+        <Reveal>
+          <div style={{ textAlign: "center", marginBottom: "1.7rem" }}>
+            <span className="hp-eyebrow">By the numbers</span>
+            <h2 className="hp-title" style={{ fontSize: "clamp(2rem, 4.6vw, 3rem)", marginTop: "0.9rem" }}>Results That Speak</h2>
+          </div>
         </Reveal>
 
-        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 60 }}>
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.1}>
-              <div className="stat-box">
-                <span className="sp-display" style={{ fontSize: "2.6rem", fontWeight: 700, color: "var(--text)", display: "block", marginBottom: 6, letterSpacing: "-0.04em" }}>
-                  {s.value}
-                </span>
-                <span className="sp-body" style={{ fontSize: "0.78rem", color: "var(--muted)", letterSpacing: "0.02em" }}>
-                  {s.label}
-                </span>
-              </div>
-            </Reveal>
+        <div className="hp-stats">
+          {stats.map((s) => (
+            <div key={s.label} className="hp-stat reveal is-visible">
+              <CountUp value={s.value} suffix={s.suffix} />
+              <p className="hp-body" style={{ margin: "0.35rem 0 0", fontSize: "0.84rem" }}>{s.label}</p>
+            </div>
           ))}
         </div>
 
-        <hr className="sp-hr" />
+        <hr className="hp-rule" style={{ marginTop: "1.8rem" }} />
       </div>
     </section>
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 7 — FOUNDER MESSAGE
-═══════════════════════════════════════════════════════════════════════ */
 
 function Founder() {
   return (
-    <section className="sp-section" style={{ background: "var(--bg)", padding: "100px 0" }}>
-      <div className="sp-container">
-        <div className="founder-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 80, alignItems: "center" }}>
-          {/* Portrait placeholder */}
-          <Reveal>
-            <div className="founder-portrait" style={{
-              aspectRatio: "3/4", borderRadius: 20,
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              position: "relative", overflow: "hidden",
-              maxWidth: 380,
-            }}>
-              {/* Decorative geometric overlay */}
-              <div style={{
-                position: "absolute", inset: 0,
-                background: "radial-gradient(ellipse at 30% 40%, rgba(175,180,200,0.06) 0%, transparent 60%)",
-              }} />
-              <span className="sp-display" style={{ fontSize: "5rem", color: "var(--faint)" }}>◎</span>
-              <span className="sp-body" style={{
-                position: "absolute", bottom: 24, left: 24, right: 24,
-                fontSize: "0.7rem", letterSpacing: "0.12em", textTransform: "uppercase",
-                color: "var(--faint)", textAlign: "center",
-              }}>
-                Tej Ponnala · CEO
-              </span>
-            </div>
-          </Reveal>
-
-          {/* Message */}
-          <div>
-            <Reveal>
-              <span className="eyebrow" style={{ marginBottom: 20, display: "block" }}>
-                <span className="eyebrow-line" />
-                From the Founder
-              </span>
-            </Reveal>
-
-            <h2 className="sp-display" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.15, maxWidth: "100%", wordBreak: "break-word" }}>
-              {["A single mission:", "empower businesses to thrive."].map((l, i) => (
-                <AnimatedLine key={i} staggerIndex={i}>{l}</AnimatedLine>
-              ))}
-            </h2>
-
-            <Reveal delay={0.2}>
-              <p className="sp-body" style={{ marginTop: 28, fontSize: "1rem", lineHeight: 1.8, color: "var(--muted)" }}>
-                We go beyond delivering software solutions. We create innovative, future-ready
-                technologies that fuel growth, unlock new opportunities, and transform the way
-                our clients operate. With unwavering commitment to quality, scalability, and
-                client success, Tezh Technologies doesn't just build solutions — we build
-                long-term success stories for every client we serve.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.3}>
-              <div style={{ marginTop: 40, display: "flex", alignItems: "center", gap: 20 }}>
-                <div style={{ width: 1, height: 48, background: "var(--border)" }} />
-                <div>
-                  <span className="sp-display" style={{ display: "block", fontWeight: 600, color: "var(--text)", fontSize: "1rem" }}>Tej Ponnala</span>
-                  <span className="sp-body" style={{ fontSize: "0.78rem", color: "var(--faint)", letterSpacing: "0.08em", textTransform: "uppercase" }}>CEO, Tezh Technologies</span>
-                </div>
-              </div>
-            </Reveal>
+    <section className="hp-section">
+      <div className="hp-container hp-grid-2">
+        <Reveal>
+          <div className="hp-card" style={{ maxWidth: 390, aspectRatio: "3/4", display: "grid", placeItems: "center" }}>
+            <span className="hp-icon" style={{ fontSize: "3rem" }}>◎</span>
+            <p className="hp-num" style={{ position: "absolute", bottom: 16 }}>Tej Ponnala · CEO</p>
           </div>
-        </div>
+        </Reveal>
+
+        <Reveal>
+          <div>
+            <span className="hp-eyebrow">From the Founder</span>
+            <h2 className="hp-title" style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", marginTop: "0.9rem" }}>
+              A single mission: empower businesses to thrive.
+            </h2>
+            <p className="hp-body" style={{ marginTop: "1rem" }}>
+              We go beyond delivering software solutions. We create innovative, future-ready
+              technologies that fuel growth, unlock new opportunities, and transform the way
+              our clients operate. With unwavering commitment to quality, scalability, and
+              client success, Tezh Technologies doesn&apos;t just build solutions - we build
+              long-term success stories for every client we serve.
+            </p>
+            <div style={{ marginTop: "1.1rem", borderLeft: "1px solid var(--accent)", paddingLeft: "0.9rem" }}>
+              <strong style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", color: "var(--primary)", fontSize: "1.2rem" }}>Tej Ponnala</strong>
+              <p className="hp-num" style={{ marginTop: "0.25rem" }}>CEO, Tezh Technologies</p>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 8 — BLOG PREVIEW
-═══════════════════════════════════════════════════════════════════════ */
-
-// function BlogPreview() {
-//   const posts = [
-//     { label: "Aug 30, 2025", tag: "Inside Tezh", title: "Hello World — Welcome to the Tezh Blog", min: "1 min read" },
-//     { label: "Sep 13, 2022", tag: "Growth", title: "10 Simple Practices to Get 1% Better Every Day", min: "2 min read" },
-//   ];
-
-//   return (
-//     <section style={{ background: "var(--bg-raised)", padding: "100px 0" }}>
-//       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
-//         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 56, flexWrap: "wrap", gap: 24 }}>
-//           <div>
-//             <Reveal>
-//               <span className="eyebrow" style={{ marginBottom: 12, display: "block" }}>
-//                 <span className="eyebrow-line" />
-//                 Knowledge base
-//               </span>
-//             </Reveal>
-//             <Reveal delay={0.1}>
-//               <h2 className="sp-display" style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)", fontWeight: 600, color: "var(--text)", letterSpacing: "-0.02em" }}>
-//                 Insights & News
-//               </h2>
-//             </Reveal>
-//           </div>
-//           <Reveal delay={0.15}>
-//             <a href="/blog" className="btn-ghost" style={{ fontSize: "0.82rem" }}>View All →</a>
-//           </Reveal>
-//         </div>
-
-//         <hr className="sp-hr" style={{ marginBottom: 48 }} />
-
-//         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-//           {posts.map((post, i) => (
-//             <Reveal key={post.title} delay={i * 0.1}>
-//               <a href="/blog" style={{ textDecoration: "none" }}>
-//                 <div style={{
-//                   border: "1px solid var(--border)", borderRadius: 18,
-//                   padding: "36px 32px", background: "var(--surface)",
-//                   transition: "border-color 0.3s, transform 0.3s",
-//                   cursor: "pointer", position: "relative", overflow: "hidden",
-//                 }}
-//                   onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
-//                   onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "translateY(0)"; }}
-//                 >
-//                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
-//                     <span className="sp-body" style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--faint)" }}>{post.tag}</span>
-//                     <span className="sp-body" style={{ fontSize: "0.65rem", color: "var(--faint)" }}>{post.label}</span>
-//                   </div>
-//                   <h3 className="sp-display" style={{ fontSize: "1.15rem", fontWeight: 600, color: "var(--text)", marginBottom: 20, lineHeight: 1.35 }}>{post.title}</h3>
-//                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-//                     <span className="sp-body" style={{ fontSize: "0.72rem", color: "var(--faint)" }}>{post.min}</span>
-//                     <span style={{ color: "var(--muted)", fontSize: "0.85rem" }}>→</span>
-//                   </div>
-//                 </div>
-//               </a>
-//             </Reveal>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTION 9 — FINAL CTA
-═══════════════════════════════════════════════════════════════════════ */
 
 function FinalCTA() {
   return (
-    <section className="sp-grain final-cta" style={{ background: "var(--bg)", padding: "140px 48px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-      <Orb style={{ left: "20%", top: "15%", width: 600, height: 600, animDelay: 0 }} />
-      <Orb style={{ right: "10%", bottom: "10%", width: 400, height: 400, animDelay: 2 }} />
-
-      <div style={{ maxWidth: 800, margin: "0 auto", position: "relative", zIndex: 1 }}>
+    <section className="hp-section" style={{ textAlign: "center", background: "#fbf9f5" }}>
+      <div className="hp-container" style={{ maxWidth: 900 }}>
         <Reveal>
-          <span className="eyebrow" style={{ marginBottom: 24, display: "block", justifyContent: "center" }}>
-            <span className="eyebrow-line" />
-            Ready to begin?
-            <span className="eyebrow-line" />
-          </span>
+          <span className="hp-eyebrow">Ready to begin?</span>
+          <h2 className="hp-title" style={{ fontSize: "clamp(2.2rem, 6vw, 4.8rem)", marginTop: "0.95rem" }}>
+            Have a project in mind?
+          </h2>
         </Reveal>
-
-        <h2 className="sp-display" style={{ fontSize: "clamp(2rem, 6vw, 5rem)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.03em", lineHeight: 1.04 }}>
-          {["Have a project", "in mind?"].map((l, i) => (
-            <AnimatedLine key={i} staggerIndex={i}>{l}</AnimatedLine>
-          ))}
-        </h2>
-
-        <Reveal delay={0.2}>
-          <p className="sp-body" style={{ marginTop: 24, fontSize: "1.05rem", color: "var(--muted)", maxWidth: 520, margin: "24px auto 0", lineHeight: 1.7 }}>
+        <Reveal>
+          <p className="hp-body" style={{ maxWidth: 640, margin: "1rem auto 0" }}>
             At Tezh Technologies, we combine Technology, Trust, and Teamwork
-            to craft solutions that drive measurable growth. Share your vision —
-            together, we'll build something impactful.
+            to craft solutions that drive measurable growth. Share your vision -
+            together, we&apos;ll build something impactful.
           </p>
-        </Reveal>
-
-        <Reveal delay={0.3}>
-          <div className="btn-stack" style={{ marginTop: 48, display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="/contact" className="btn-primary" style={{ fontSize: "0.9rem", padding: "18px 40px" }}>
-              Start a Conversation →
-            </a>
-            <a href="/case-studies" className="btn-ghost" style={{ fontSize: "0.9rem", padding: "18px 40px" }}>
-              View Case Studies
-            </a>
+          <div className="hp-actions" style={{ marginTop: "1.7rem" }}>
+            <a href="/contact" className="hp-btn hp-btn-primary shimmer-btn">Start a Conversation</a>
+            <a href="/case-studies" className="hp-btn hp-btn-secondary">View Case Studies</a>
           </div>
-        </Reveal>
-
-        <Reveal delay={0.4}>
-          <p className="sp-body" style={{ marginTop: 28, fontSize: "0.72rem", color: "rgba(255,255,255,0.15)", letterSpacing: "0.05em" }}>
-            Average response time: &lt; 24 hours · No commitment required
-          </p>
+          <p className="hp-cta-note">Average response time: &lt; 24 hours · No commitment required</p>
         </Reveal>
       </div>
     </section>
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════════════════════════════ */
 
 function Footer() {
   const links = {
@@ -1055,141 +858,65 @@ function Footer() {
   };
 
   return (
-    <footer className="footer-wrap" style={{ background: "var(--bg-raised)", borderTop: "1px solid var(--border)", padding: "80px 48px 40px" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.5fr", gap: 60, marginBottom: 60 }}>
-          {/* Brand */}
-          <div>
-            <span className="sp-display" style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--text)", display: "block", marginBottom: 16 }}>
-              Tezh Technologies
-            </span>
-            <p className="sp-body" style={{ fontSize: "0.85rem", lineHeight: 1.7, color: "var(--muted)", maxWidth: 280 }}>
-              Your trusted partner in digital transformation — delivering innovative technology solutions tailored to your business needs.
-            </p>
-          </div>
-
-          {/* Nav groups */}
-          {Object.entries(links).map(([group, items]) => (
-            <div key={group}>
-              <span className="sp-body" style={{ fontSize: "0.58rem", letterSpacing: "0.28em", textTransform: "uppercase", color: "var(--faint)", display: "block", marginBottom: 20 }}>
-                {group}
-              </span>
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
-                {items.map((item) => (
-                  <li key={item.label}>
-                    <Link href={item.href} style={{
-                      color: "var(--muted)", textDecoration: "none",
-                      fontSize: "0.85rem", transition: "color 0.2s ease",
-                    }}
-                      onMouseEnter={e => e.currentTarget.style.color = "var(--text)"}
-                      onMouseLeave={e => e.currentTarget.style.color = "var(--muted)"}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          {/* Reach */}
-          <div>
-            <span className="sp-body" style={{ fontSize: "0.58rem", letterSpacing: "0.28em", textTransform: "uppercase", color: "var(--faint)", display: "block", marginBottom: 20 }}>
-              Reach Us
-            </span>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {[
-                { icon: "◈", text: "info@tezht.com", href: "mailto:info@tezht.com" },
-                { icon: "◎", text: "+91 93902 62628", href: "tel:+919390262628" },
-                { icon: "◉", text: "Nawabpet, Mahbubnagar, Telangana — 509340", href: null },
-              ].map((c) => (
-                <div key={c.text} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                  <span style={{ color: "var(--faint)", fontSize: "0.75rem", marginTop: 2, flexShrink: 0 }}>{c.icon}</span>
-                  {c.href ? (
-                    <a href={c.href} className="sp-body" style={{ fontSize: "0.82rem", color: "var(--muted)", textDecoration: "none", transition: "color 0.2s", lineHeight: 1.5 }}
-                      onMouseEnter={e => e.currentTarget.style.color = "var(--text)"}
-                      onMouseLeave={e => e.currentTarget.style.color = "var(--muted)"}
-                    >{c.text}</a>
-                  ) : (
-                    <span className="sp-body" style={{ fontSize: "0.82rem", color: "var(--muted)", lineHeight: 1.5 }}>{c.text}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+    <footer className="hp-footer">
+      <div className="hp-footer-grid">
+        <div>
+          <h4 style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", fontSize: "1.6rem", margin: "0 0 0.7rem" }}>Tezh Technologies</h4>
+          <p style={{ color: "#d2cdc3", lineHeight: 1.7, fontSize: "0.92rem", margin: 0 }}>
+            Your trusted partner in digital transformation - delivering innovative technology solutions tailored to your business needs.
+          </p>
         </div>
 
-        <hr className="sp-hr" style={{ marginBottom: 32 }} />
-
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
-          <span className="sp-body" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.15)" }}>
-            © 2026 · Tezh Technologies · All rights reserved.
-          </span>
-          <div style={{ display: "flex", gap: 24 }}>
-            {["Privacy Policy", "Terms of Service"].map((t) => (
-              <a key={t} href="#" className="sp-body" style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.18)", textDecoration: "none", transition: "color 0.2s" }}
-                onMouseEnter={e => e.currentTarget.style.color = "var(--muted)"}
-                onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.18)"}
-              >
-                {t}
-              </a>
-            ))}
+        {Object.entries(links).map(([group, items]) => (
+          <div key={group}>
+            <p style={{ fontFamily: "var(--font-dm-mono), DM Mono, monospace", color: "#c9a84c", fontSize: "0.66rem", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              {group}
+            </p>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "0.35rem" }}>
+              {items.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} style={{ color: "#f8f6f2", opacity: 0.85, fontSize: "0.88rem" }}>{item.label}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
+        ))}
+
+        <div>
+          <p style={{ fontFamily: "var(--font-dm-mono), DM Mono, monospace", color: "#c9a84c", fontSize: "0.66rem", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+            Reach Us
+          </p>
+          <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>info@tezht.com</p>
+          <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>+91 93902 62628</p>
+          <p style={{ margin: 0, color: "#d2cdc3", lineHeight: 1.6 }}>Nawabpet, Mahbubnagar, Telangana - 509340</p>
+        </div>
+      </div>
+
+      <hr style={{ border: 0, height: 1, margin: "2rem auto 1.2rem", maxWidth: 1200, background: "linear-gradient(90deg, transparent, #c9a84c 22%, #c9a84c 78%, transparent)" }} />
+
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
+        <span style={{ color: "#d2cdc3", fontSize: "0.78rem" }}>© 2026 · Tezh Technologies · All rights reserved.</span>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <a href="#" style={{ color: "#f8f6f2", fontSize: "0.78rem" }}>Privacy Policy</a>
+          <a href="#" style={{ color: "#f8f6f2", fontSize: "0.78rem" }}>Terms of Service</a>
         </div>
       </div>
     </footer>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   ROOT PAGE
-═══════════════════════════════════════════════════════════════════════ */
-
 export default function LandingPage() {
-  const overlayRef = useRef(null);
-  const heroRef    = useRef(null);
-
-  // Lenis + GSAP parallax hero overlay
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
-
-    lenis.on("scroll", ScrollTrigger.update);
-    const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-
-    const ctx = gsap.context(() => {
-      if (overlayRef.current && heroRef.current) {
-        gsap.to(overlayRef.current, {
-          opacity: 0.7,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
-    });
-
-    return () => { ctx.revert(); lenis.destroy(); };
-  }, []);
-
   return (
     <>
       <style>{CSS}</style>
-      <main className="overflow-x-hidden w-full m-0 p-0">
-        <Hero overlayRef={overlayRef} heroRef={heroRef} />
+      <main className="hp-page">
+        <Hero />
         <Positioning />
         <Pillars />
         <Services />
         <Process />
         <SocialProof />
         <Founder />
-        {/* <BlogPreview /> */}
         <FinalCTA />
       </main>
       <Footer />
