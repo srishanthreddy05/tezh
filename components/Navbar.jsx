@@ -109,13 +109,15 @@ export default function Navbar() {
       {/* ── FIXED HEADER ── */}
       <header className="fixed top-0 left-0 right-0 z-[100] w-full box-border h-[72px] flex items-center justify-center">
         <div className="w-full max-w-[1440px] flex items-center justify-between px-6 md:px-12 lg:px-16 mx-auto box-border">
-          <Link
-            href="/"
-            onClick={close}
-            className="nb-display text-xl font-semibold tracking-[0.22em] uppercase text-white select-none"
-          >
-            TEZH<span className="text-white/30">.</span>
-          </Link>
+          {!open && (
+            <Link
+              href="/"
+              onClick={close}
+              className="nb-display text-xl font-semibold tracking-[0.22em] uppercase text-white select-none"
+            >
+              TEZH<span className="text-white/30">.</span>
+            </Link>
+          )}
 
           <button
             onClick={() => setOpen((v) => !v)}
