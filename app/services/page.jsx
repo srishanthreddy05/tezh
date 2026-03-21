@@ -71,14 +71,14 @@ const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
 
   :root {
-    --bg:        #111214;
-    --bg-raised: #16181b;
-    --surface:   #1c1f23;
-    --border:    rgba(255,255,255,0.06);
-    --text:      rgba(255,255,255,0.90);
-    --muted:     rgba(255,255,255,0.38);
-    --faint:     rgba(255,255,255,0.12);
-    --accent:    #c8cdd4;
+    --bg:        #ffffff;
+    --bg-raised: #faf9ff;
+    --surface:   #ffffff;
+    --border:    #ebebeb;
+    --text:      #1a1a1a;
+    --muted:     #666666;
+    --faint:     #9a9a9a;
+    --accent:    #7c5cbf;
   }
 
   .sv-display { font-family: 'Syne', sans-serif; }
@@ -167,7 +167,7 @@ const CSS = `
     transition: border-color 0.3s ease, color 0.3s ease;
   }
   .sv-card:hover .sv-tag {
-    border-color: rgba(255,255,255,0.15);
+    border-color: #8c8c8c;
     color: rgba(255,255,255,0.45);
   }
 
@@ -178,7 +178,7 @@ const CSS = `
     padding: 14px 32px;
     border-radius: 999px;
     background: rgba(255,255,255,0.9);
-    color: #111214;
+    color: #0d0d0d;
     font-family: 'Syne', sans-serif;
     font-size: 0.85rem; font-weight: 500;
     letter-spacing: 0.04em;
@@ -198,7 +198,7 @@ const CSS = `
   /* Divider */
   .sv-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent);
+    background: linear-gradient(90deg, transparent, #dcdcdc 30%, #dcdcdc 70%, transparent);
   }
 
   /* Orb */
@@ -311,7 +311,7 @@ function ServiceHero() {
                 color: "var(--muted)",
                 textDecoration: "none",
               }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)"}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = "#8c8c8c"}
               onMouseLeave={(e) => e.currentTarget.style.borderColor = "var(--border)"}
             >
               Explore Services ↓
@@ -329,7 +329,7 @@ function ServiceHero() {
         <span className="sv-body text-[0.5rem] tracking-[0.3em] uppercase" style={{ color: "var(--faint)" }}>
           Scroll
         </span>
-        <div className="w-[1px] h-10" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.18), transparent)" }} />
+        <div className="w-[1px] h-10" style={{ background: "linear-gradient(to bottom, #8c8c8c, transparent)" }} />
       </motion.div>
     </section>
   );

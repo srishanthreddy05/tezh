@@ -99,6 +99,19 @@ const CSS = `
     padding: clamp(68px, 10vw, 120px) clamp(20px, 4.5vw, 56px);
   }
 
+  .hp-section-dark {
+    background: #faf9ff;
+  }
+
+  .hp-section-dark .hp-title,
+  .hp-section-dark .hp-body {
+    color: var(--text);
+  }
+
+  .hp-section-dark .hp-eyebrow {
+    color: var(--accent);
+  }
+
   .hp-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -116,7 +129,7 @@ const CSS = `
     text-transform: uppercase;
     letter-spacing: 0.2em;
     font-size: 0.68rem;
-    color: #ffffff;
+    color: var(--primary);
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
@@ -161,6 +174,10 @@ const CSS = `
     z-index: 1;
   }
 
+  .hp-hero .hp-eyebrow {
+    color: #ffffff;
+  }
+
   .hp-hero-title {
     margin: 1.2rem auto 0;
     max-width: 960px;
@@ -170,6 +187,7 @@ const CSS = `
     color: #ffffff;
     letter-spacing: 0.02em;
     animation: hpFadeUp 0.6s ease both;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
   }
 
   .hp-hero-title em {
@@ -193,6 +211,7 @@ const CSS = `
     font-size: clamp(1rem, 1.7vw, 1.18rem);
     color: rgba(255, 255, 255, 0.92);
     line-height: 1.75;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.38);
   }
 
   .hp-hero .hp-btn {
@@ -233,8 +252,9 @@ const CSS = `
 
   .hp-btn-primary {
     background: var(--accent);
-    color: var(--primary);
+    color: #ffffff;
     border: 1px solid var(--accent);
+    box-shadow: 0 8px 32px rgba(124, 92, 191, 0.3);
   }
 
   .hp-btn-secondary {
@@ -243,11 +263,16 @@ const CSS = `
     background: transparent;
   }
 
+  .hp-btn-primary:hover {
+    background: #6a4daa;
+    box-shadow: 0 8px 32px rgba(124, 92, 191, 0.35);
+  }
+
   .hp-ticker-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     overflow: hidden;
-    background: #fbf9f5;
+    background: #faf9ff;
   }
 
   .hp-ticker {
@@ -262,7 +287,7 @@ const CSS = `
     font-size: 0.66rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: var(--faint);
+    color: #7c5cbf;
     white-space: nowrap;
   }
 
@@ -291,6 +316,7 @@ const CSS = `
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     padding: 1.5rem 1.25rem;
     position: relative;
+    border-radius: 14px;
     transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
   }
 
@@ -307,8 +333,8 @@ const CSS = `
 
   .hp-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.09);
-    border-color: #dbc98d;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    border-color: #d9ccef;
   }
 
   .hp-card:hover::before {
@@ -320,9 +346,24 @@ const CSS = `
     color: inherit;
   }
 
+  .hp-service-link .hp-title {
+    transition: color 0.24s ease;
+  }
+
+  .hp-service-link:hover .hp-title {
+    color: #7c5cbf;
+  }
+
   .hp-icon {
     color: var(--accent);
     font-size: 1.15rem;
+    width: 34px;
+    height: 34px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid #e5dbf5;
+    background: #f7f3ff;
   }
 
   .hp-num {
@@ -357,14 +398,31 @@ const CSS = `
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
     padding: 1.2rem;
     text-align: center;
+    border-radius: 12px;
+  }
+
+  .hp-section-dark .hp-step {
+    background: #ffffff;
+    border-color: #ebebeb;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  }
+
+  .hp-section-dark .hp-step .hp-title {
+    color: var(--text);
+  }
+
+  .hp-section-dark .hp-step .hp-num {
+    color: var(--accent);
   }
 
   .hp-stats {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    border: 1px solid var(--border);
+    border: 1px solid #d7dfef;
     background: var(--surface);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 28px rgba(9, 18, 46, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
   }
 
   .hp-stat {
@@ -618,7 +676,7 @@ function Positioning() {
           ))}
         </div>
       </div>
-      <div className="hp-section">
+      <div className="hp-section hp-section-dark">
         <div className="hp-container hp-grid-2">
           <Reveal>
             <div>
@@ -714,7 +772,7 @@ function Services() {
 
 function Process() {
   return (
-    <section className="hp-section">
+    <section className="hp-section hp-section-dark">
       <div className="hp-container hp-grid-2">
         <Reveal>
           <div>
@@ -812,7 +870,7 @@ function Founder() {
 
 function FinalCTA() {
   return (
-    <section className="hp-section" style={{ textAlign: "center", background: "#fbf9f5" }}>
+    <section className="hp-section hp-section-dark" style={{ textAlign: "center" }}>
       <div className="hp-container" style={{ maxWidth: 900 }}>
         <Reveal>
           <span className="hp-eyebrow">Ready to begin?</span>

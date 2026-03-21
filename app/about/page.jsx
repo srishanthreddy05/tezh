@@ -108,14 +108,14 @@ export default function AboutPage() {
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
 
         :root {
-          --bg-base:    #111214;
-          --bg-raised:  #16181b;
-          --bg-surface: #1c1f23;
-          --border:     rgba(255,255,255,0.06);
-          --text-primary: rgba(255,255,255,0.92);
-          --text-secondary: rgba(255,255,255,0.40);
-          --text-muted: rgba(255,255,255,0.18);
-          --accent: #c8cdd4;
+          --bg-base:    #ffffff;
+          --bg-raised:  #faf9ff;
+          --bg-surface: #ffffff;
+          --border:     #ebebeb;
+          --text-primary: #1a1a1a;
+          --text-secondary: #666666;
+          --text-muted: #8c8c8c;
+          --accent: #7c5cbf;
         }
 
         * { box-sizing: border-box; }
@@ -152,7 +152,7 @@ export default function AboutPage() {
         }
         .stat-card:hover {
           background: var(--bg-surface) !important;
-          border-color: rgba(255,255,255,0.12) !important;
+          border-color: #9a9a9a !important;
         }
 
         /* Value card */
@@ -174,7 +174,7 @@ export default function AboutPage() {
           position: absolute;
           top: 0; left: -100%;
           width: 60%; height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+          background: linear-gradient(90deg, transparent, #9a9a9a, transparent);
           transition: left 0.5s ease;
         }
         .cta-btn:hover::before { left: 140%; }
@@ -521,7 +521,7 @@ function CoreValuesSection() {
 
               {/* Bottom accent line */}
               <div className="mt-8 h-[1px] w-0 group-hover:w-full transition-all duration-500"
-                style={{ background: "rgba(255,255,255,0.12)" }} />
+                style={{ background: "#9a9a9a" }} />
             </motion.div>
           ))}
         </StaggerReveal>

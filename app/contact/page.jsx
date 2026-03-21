@@ -10,14 +10,14 @@ const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
 
   :root {
-    --bg:        #111214;
-    --bg-raised: #16181b;
-    --surface:   #1c1f23;
-    --border:    rgba(255,255,255,0.06);
-    --text:      rgba(255,255,255,0.90);
-    --muted:     rgba(255,255,255,0.38);
-    --faint:     rgba(255,255,255,0.12);
-    --accent:    #c8cdd4;
+    --bg:        #ffffff;
+    --bg-raised: #faf9ff;
+    --surface:   #ffffff;
+    --border:    #ebebeb;
+    --text:      #1a1a1a;
+    --muted:     #666666;
+    --faint:     #9a9a9a;
+    --accent:    #7c5cbf;
   }
   .sp-display { font-family: 'Syne', sans-serif; }
   .sp-body    { font-family: 'DM Sans', sans-serif; }
@@ -37,7 +37,7 @@ const CSS = `
 
   .sp-hr {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent);
+    background: linear-gradient(90deg, transparent, #dcdcdc 30%, #dcdcdc 70%, transparent);
   }
 
   /* Form inputs */
@@ -89,7 +89,7 @@ const CSS = `
     transition: border-color 0.25s ease;
   }
   .sp-select:focus { border-bottom-color: rgba(255,255,255,0.3); color: var(--text); }
-  .sp-select option { background: #1c1f23; color: var(--text); }
+  .sp-select option { background: #ffffff; color: var(--text); }
 
   /* CTA button */
   .sp-cta {
@@ -97,7 +97,7 @@ const CSS = `
     display: inline-flex; align-items: center; gap: 10px;
     padding: 16px 36px; border-radius: 999px;
     background: rgba(255,255,255,0.9);
-    color: #111214;
+    color: #0d0d0d;
     font-family: 'Syne', sans-serif;
     font-size: 0.85rem; font-weight: 600;
     letter-spacing: 0.05em; text-decoration: none;
@@ -123,7 +123,7 @@ const CSS = `
     transition: border-color 0.3s ease, transform 0.3s ease;
   }
   .sp-info-card:hover {
-    border-color: rgba(255,255,255,0.12);
+    border-color: #9a9a9a;
     transform: translateY(-3px);
   }
 
@@ -153,7 +153,7 @@ const CSS = `
     transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
   }
   .sp-wa:hover {
-    border-color: rgba(255,255,255,0.18);
+    border-color: #8c8c8c;
     color: var(--text);
     transform: translateY(-2px);
   }
@@ -332,7 +332,7 @@ function Hero() {
         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
       >
         <span className="sp-body text-[0.5rem] tracking-[0.3em] uppercase" style={{ color: "var(--faint)" }}>Scroll</span>
-        <div className="w-[1px] h-10" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.15), transparent)" }} />
+        <div className="w-[1px] h-10" style={{ background: "linear-gradient(to bottom, #8c8c8c, transparent)" }} />
       </motion.div>
     </section>
   );
@@ -717,7 +717,7 @@ function CTABanner() {
               className="sp-body inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm transition-all duration-300"
               style={{ border: "1px solid var(--border)", color: "var(--muted)", textDecoration: "none" }}
               onMouseEnter={e => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)";
+                e.currentTarget.style.borderColor = "#8c8c8c";
                 e.currentTarget.style.color = "rgba(255,255,255,0.75)";
               }}
               onMouseLeave={e => {
