@@ -233,8 +233,8 @@ export default function AboutPage() {
             <Reveal delay={0.35}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact"
-                  className="cta-btn ab-display inline-block px-8 py-4 text-sm font-medium tracking-wide text-black rounded-full transition-all duration-300 hover:scale-[1.02]"
-                  style={{ background: "var(--accent)" }}>
+                  className="cta-btn ab-display inline-block px-8 py-4 text-sm font-medium tracking-wide text-white rounded-full transition-all duration-300 hover:scale-[1.02]"
+                  style={{ background: "var(--bg-surface)" }}>
                   Start Your Project
                 </a>
                 <a href="#founder"
@@ -261,7 +261,7 @@ export default function AboutPage() {
         <div className="py-5 border-y overflow-hidden" style={{ borderColor: "var(--border)", background: "var(--bg-raised)" }}>
           <Ticker items={[
             "Technology", "Trust", "Team", "Innovation",
-            "Strategy", "Digital Transformation", "AI & ML", "Cloud Solutions",
+            "Strategy", "AI & ML", "Cloud Solutions",
             "Product Design", "Engineering Excellence",
           ]} />
         </div>
@@ -564,8 +564,8 @@ function CTASection() {
         <Reveal delay={0.3}>
           <a
             href="/contact"
-            className="cta-btn ab-display inline-block px-10 py-5 rounded-full font-medium tracking-wide text-black transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl"
-            style={{ background: "var(--accent)", fontSize: "0.95rem" }}
+            className="cta-btn ab-display inline-block px-10 py-5 rounded-full font-medium tracking-wide text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl"
+            style={{ background: "var(--bg-surface)", fontSize: "0.95rem" }}
           >
             Get in Touch →
           </a>

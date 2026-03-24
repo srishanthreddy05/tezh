@@ -32,27 +32,6 @@ const services = [
     line: "Agents that learn, understand, and act - 24/7.",
     href: "/services/ai-agents",
   },
-  {
-    num: "05",
-    icon: "⬡",
-    title: "App Development",
-    line: "Secure, scalable applications built around your users.",
-    href: "/services/app-development",
-  },
-  {
-    num: "06",
-    icon: "◈",
-    title: "Digital Transformation",
-    line: "Reshape the way your business operates and grows.",
-    href: "/services/digital-transformation",
-  },
-  {
-    num: "07",
-    icon: "◎",
-    title: "Digital Marketing",
-    line: "Data-driven growth across every channel that matters.",
-    href: "/services/digital-marketing",
-  },
 ];
 
 const pillars = [
@@ -909,9 +888,6 @@ function Footer() {
       { label: "Automation Solutions", href: "/services/automation" },
       { label: "Data Analytics", href: "/services/data-analytics" },
       { label: "AI Agents", href: "/services/ai-agents" },
-      { label: "App Development", href: "/services/app-development" },
-      { label: "Digital Transformation", href: "/services/digital-transformation" },
-      { label: "Digital Marketing", href: "/services/digital-marketing" },
     ],
   };
 
@@ -921,7 +897,7 @@ function Footer() {
         <div>
           <h4 style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", fontSize: "1.6rem", margin: "0 0 0.7rem" }}>Tezh Technologies</h4>
           <p style={{ color: "#d2cdc3", lineHeight: 1.7, fontSize: "0.92rem", margin: 0 }}>
-            Your trusted partner in digital transformation - delivering innovative technology solutions tailored to your business needs.
+            Your trusted partner for innovative technology solutions tailored to your business needs.
           </p>
         </div>
 

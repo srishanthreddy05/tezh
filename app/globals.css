@@ -120,3 +120,22 @@ small,
     transform: none;
   }
 }
+
+/* Force a site-wide dark palette across all page-level style blocks */
+:root {
+  --bg: #0b0d10 !important;
+  --bg-base: #0b0d10 !important;
+  --bg-raised: #111317 !important;
+  --surface: #171a1f !important;
+  --bg-surface: #171a1f !important;
+
+  --text: rgba(255,255,255,0.92) !important;
+  --text-primary: rgba(255,255,255,0.92) !important;
+  --text-secondary: rgba(255,255,255,0.45) !important;
+  --muted: rgba(255,255,255,0.45) !important;
+  --text-muted: rgba(255,255,255,0.28) !important;
+  --faint: rgba(255,255,255,0.18) !important;
+
+  --border: rgba(255,255,255,0.10) !important;
+  --accent: #8e96a2 !important;
+}

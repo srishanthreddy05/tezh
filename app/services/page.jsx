@@ -39,30 +39,6 @@ const services = [
     link: "/services/ai-agents",
     tag: "AI & ML",
   },
-  {
-    number: "05",
-    title: "App & Software Development",
-    desc: "Custom mobile, web, and API solutions — from zero to production, built with precision and long-term maintainability.",
-    icon: "▣",
-    link: "/services/app-development",
-    tag: "Engineering",
-  },
-  {
-    number: "06",
-    title: "Digital Transformation",
-    desc: "Modernize legacy systems, optimize operations, and future-proof your organization with a clear digital strategy.",
-    icon: "◐",
-    link: "/services/digital-transformation",
-    tag: "Strategy",
-  },
-  {
-    number: "07",
-    title: "Digital Marketing",
-    desc: "Performance-driven SEO, PPC, and multi-channel campaigns that build brand authority and compound growth.",
-    icon: "◑",
-    link: "/services/digital-marketing",
-    tag: "Growth",
-  },
 ];
 
 /* ─── Design tokens ─────────────────────────────────────────────────── */

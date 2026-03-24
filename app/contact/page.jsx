@@ -212,7 +212,7 @@ function Orb({ style }) {
 const faqs = [
   {
     q: "What services does Tezh Technologies offer?",
-    a: "We provide a comprehensive range of technology services including IT infrastructure, AI & automation, app development, data analytics, digital marketing, and digital transformation — tailored to each client's unique needs.",
+    a: "We provide a comprehensive range of technology services including IT infrastructure, AI & automation, and data analytics — tailored to each client's unique needs.",
   },
   {
     q: "What happens after I send the contact form?",
@@ -560,10 +560,7 @@ function ContactSection() {
                       <option value="it">IT Services</option>
                       <option value="ai">AI Agents</option>
                       <option value="automation">Automation Solutions</option>
-                      <option value="app">App & Software Development</option>
                       <option value="data">Data Analytics</option>
-                      <option value="marketing">Digital Marketing</option>
-                      <option value="transformation">Digital Transformation</option>
                       <option value="other">Other / Not sure</option>
                     </select>
                     <span style={{
