@@ -245,7 +245,9 @@ function Hero() {
     <section
       ref={ref}
       className="sp-grain sp-grid relative min-h-[82vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden"
-      style={{ background: "var(--bg)" }}
+      style={{
+        background: `linear-gradient(rgba(11,13,16,0.72), rgba(11,13,16,0.72)), url('/images/careers.jpg') center/cover no-repeat`
+      }}
     >
       <Orb style={{ left: "5%",  top: "8%",    width: 500, height: 500, animDelay: 0 }} />
       <Orb style={{ right: "4%", top: "45%",   width: 380, height: 380, animDelay: 2 }} />

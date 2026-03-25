@@ -258,8 +258,15 @@ function Hero() {
     <section
       ref={ref}
       className="sp-grain sp-grid relative min-h-[70vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden"
-      style={{ background: "var(--bg)" }}
+      style={{ backgroundColor: "#0b0d10" }}
     >
+      {/* Background image and overlays, About/Services style */}
+      <img
+        src="/images/contact.jpg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      />
       <Orb style={{ left: "5%",  top: "8%",    width: 500, height: 500, animDelay: 0 }} />
       <Orb style={{ right: "4%", top: "45%",   width: 380, height: 380, animDelay: 2 }} />
       <Orb style={{ left: "42%", bottom: "3%", width: 300, height: 300, animDelay: 4 }} />

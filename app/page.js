@@ -1,5 +1,26 @@
 "use client";
 
+function ProcessTicker() {
+  const steps = [
+    "01 Diagnose",
+    "02 Design",
+    "03 Deploy",
+    "04 Optimize",
+  ];
+  const sequence = [...steps, ...steps, ...steps, ...steps];
+  return (
+    <div className="hp-services-ticker-wrap">
+      <div className="hp-services-ticker-track">
+        {[...sequence, ...sequence].map((item, i) => (
+          <span key={`${item}-${i}`} className="hp-services-ticker-item">
+            {item} •
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
@@ -867,8 +888,9 @@ function ServicesTicker() {
 
 function Process() {
   return (
-    <section className="hp-section hp-section-dark">
-      <div className="hp-container hp-grid-2">
+    <section className="hp-section hp-section-dark relative overflow-hidden" style={{ backgroundImage: 'url("/images/howework.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="absolute inset-0 bg-black/30 z-0" />
+      <div className="hp-container hp-grid-2 relative z-10">
         <Reveal>
           <div>
             <span className="hp-eyebrow">How we work</span>
@@ -965,8 +987,15 @@ function Founder() {
 
 function FinalCTA() {
   return (
-    <section className="hp-section hp-section-dark" style={{ textAlign: "center" }}>
-      <div className="hp-container" style={{ maxWidth: 900 }}>
+    <section className="hp-section hp-section-dark relative overflow-hidden" style={{ textAlign: "center" }}>
+      {/* Background image and overlays, About/Services style */}
+      <img
+        src="/images/contact.jpg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      />
+      <div className="hp-container relative z-10" style={{ maxWidth: 900 }}>
         <Reveal>
           <span className="hp-eyebrow">Ready to begin?</span>
           <h2 className="hp-title" style={{ fontSize: "clamp(2.2rem, 6vw, 4.8rem)", marginTop: "0.95rem" }}>
@@ -1016,9 +1045,10 @@ function Footer() {
           </p>
         </div>
 
+
         {Object.entries(links).map(([group, items]) => (
           <div key={group}>
-            <p style={{ fontFamily: "var(--font-dm-mono), DM Mono, monospace", color: "#c9a84c", fontSize: "0.66rem", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+            <p style={{ fontFamily: "var(--font-dm-mono), DM Mono, monospace", color: "#f8f6f2", fontSize: "0.66rem", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
               {group}
             </p>
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "0.35rem" }}>
@@ -1032,16 +1062,17 @@ function Footer() {
         ))}
 
         <div>
-          <p style={{ fontFamily: "var(--font-dm-mono), DM Mono, monospace", color: "#c9a84c", fontSize: "0.66rem", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+          <p style={{ fontFamily: "var(--font-dm-mono), DM Mono, monospace", color: "#f8f6f2", fontSize: "0.66rem", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
             Reach Us
           </p>
           <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>info@tezht.com</p>
           <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>+91 93902 62628</p>
+          <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>+1 (959) 282-4133</p>
           <p style={{ margin: 0, color: "#d2cdc3", lineHeight: 1.6 }}>Nawabpet, Mahbubnagar, Telangana - 509340</p>
         </div>
       </div>
 
-      <hr style={{ border: 0, height: 1, margin: "2rem auto 1.2rem", maxWidth: 1200, background: "linear-gradient(90deg, transparent, #c9a84c 22%, #c9a84c 78%, transparent)" }} />
+      <hr style={{ border: 0, height: 1, margin: "2rem auto 1.2rem", maxWidth: 1200, background: "linear-gradient(90deg, transparent, #f8f6f2 22%, #f8f6f2 78%, transparent)" }} />
 
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
         <span style={{ color: "#d2cdc3", fontSize: "0.78rem" }}>© 2026 · Tezh Technologies · All rights reserved.</span>
@@ -1060,8 +1091,9 @@ export default function LandingPage() {
         <Pillars />
         <ServicesTicker />
         <Services />
-        <Process />
-        <SocialProof />
+          <SocialProof />
+          <ProcessTicker />
+          <Process />
         <Founder />
         <FinalCTA />
       </main>

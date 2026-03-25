@@ -11,15 +11,60 @@ const caseStudies = [
     id: "01",
     icon: "◈",
     tag: "Healthcare · IT Infrastructure",
-    title: "Trusted by Healthcare Providers",
+    title: "Specialty Care Clinics",
     client: "Specialty Care Clinics",
-    challenge: "Since 2021, TezhTechnologies has supported healthcare organizations with secure and dependable IT infrastructure that keeps their operations running without disruption.",
+    challenge: "Since 2021, TezhTechnologies has supported Specialty Care Clinics with secure and dependable IT infrastructure that keeps their operations running without disruption.",
     solution: "Delivered stable, secure infrastructure and ongoing support tailored for healthcare operations with a focus on reliability, continuity, and compliance-ready practices.",
     outcomes: [
-      { value: "Texas Specialty Clinic", label: "Specialty Care Clinic" },
-      { value: "ASP Cares", label: "Specialty Care Clinic" },
-      { value: "Crescent Regional Hospital", label: "Regional Hospital" },
-      { value: "Hill Regional Hospital", label: "Regional Hospital" },
+      { value: "100% Uptime", label: "IT Infrastructure" },
+    ],
+  },
+  {
+    id: "02",
+    icon: "◈",
+    tag: "Healthcare · IT Infrastructure",
+    title: "Texas Specialty Clinic",
+    client: "Texas Specialty Clinic",
+    challenge: "Enabled Texas Specialty Clinic to maintain seamless operations with robust, secure, and scalable IT infrastructure.",
+    solution: "Implemented a reliable IT backbone and provided ongoing support for uninterrupted healthcare delivery.",
+    outcomes: [
+      { value: "Seamless Operations", label: "IT Support" },
+    ],
+  },
+  {
+    id: "03",
+    icon: "◈",
+    tag: "Healthcare · IT Infrastructure",
+    title: "ASP Cares",
+    client: "ASP Cares",
+    challenge: "Supported ASP Cares with secure infrastructure and compliance-ready practices for healthcare operations.",
+    solution: "Delivered tailored IT solutions and ongoing support to ensure reliability and continuity.",
+    outcomes: [
+      { value: "Compliance Ready", label: "Healthcare IT" },
+    ],
+  },
+  {
+    id: "04",
+    icon: "◈",
+    tag: "Healthcare · IT Infrastructure",
+    title: "Crescent Regional Hospital",
+    client: "Crescent Regional Hospital",
+    challenge: "Helped Crescent Regional Hospital achieve operational excellence with dependable IT infrastructure.",
+    solution: "Provided secure, scalable, and continuous IT support for hospital operations.",
+    outcomes: [
+      { value: "Operational Excellence", label: "Hospital IT" },
+    ],
+  },
+  {
+    id: "05",
+    icon: "◈",
+    tag: "Healthcare · IT Infrastructure",
+    title: "Hill Regional Hospital",
+    client: "Hill Regional Hospital",
+    challenge: "Ensured Hill Regional Hospital's IT systems remained secure and highly available for critical healthcare services.",
+    solution: "Implemented robust IT infrastructure and provided ongoing monitoring and support.",
+    outcomes: [
+      { value: "High Availability", label: "Hospital IT" },
     ],
   },
 ];
@@ -328,7 +373,9 @@ function Hero() {
     <section
       ref={ref}
       className="sp-grain sp-grid relative min-h-[82vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden"
-      style={{ background: "var(--bg)" }}
+      style={{
+        background: `linear-gradient(rgba(11,13,16,0.72), rgba(11,13,16,0.72)), url('/images/casestudies.jpg') center/cover no-repeat`
+      }}
     >
       <Orb style={{ left: "5%",  top: "8%",    width: 500, height: 500, animDelay: 0 }} />
       <Orb style={{ right: "4%", top: "45%",   width: 380, height: 380, animDelay: 2 }} />
