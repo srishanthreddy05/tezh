@@ -109,7 +109,7 @@ export default function AboutPage() {
 
         :root {
           --bg-base:    #ffffff;
-          --bg-raised:  #faf9ff;
+          --bg-raised: #111317;
           --bg-surface: #ffffff;
           --border:     #ebebeb;
           --text-primary: #1a1a1a;

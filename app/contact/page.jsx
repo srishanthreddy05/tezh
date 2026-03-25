@@ -10,8 +10,8 @@ const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
 
   :root {
-    --bg:        #ffffff;
-    --bg-raised: #faf9ff;
+    --bg:        #0b0d10;
+    --bg-raised: #111317;
     --surface:   #ffffff;
     --border:    #ebebeb;
     --text:      #1a1a1a;
@@ -139,23 +139,6 @@ const CSS = `
     padding: 22px 0;
     text-align: left;
     gap: 16px;
-  }
-
-  /* WhatsApp pill */
-  .sp-wa {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 20px; border-radius: 999px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    text-decoration: none;
-    transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  }
-  .sp-wa:hover {
-    border-color: #8c8c8c;
-    color: var(--text);
-    transform: translateY(-2px);
   }
 
   .sp-bc { color: var(--faint); text-decoration: none; font-size: 0.75rem; transition: color 0.2s ease; }
@@ -392,19 +375,6 @@ function ContactSection() {
                 At Tezh Technologies, we value every conversation. Not a fan of forms?
                 Reach us directly — we're always happy to talk.
               </p>
-            </Reveal>
-
-            {/* WhatsApp */}
-            <Reveal delay={0.2}>
-              <a
-                href="https://wa.me/919390262628"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sp-wa mb-10 inline-flex"
-              >
-                <span style={{ fontSize: "0.95rem" }}>💬</span>
-                Text on WhatsApp
-              </a>
             </Reveal>
 
             {/* Contact cards */}

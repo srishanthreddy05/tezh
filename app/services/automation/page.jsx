@@ -58,8 +58,8 @@ const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
 
   :root {
-    --bg:        #ffffff;
-    --bg-raised: #faf9ff;
+    --bg:        #0b0d10;
+    --bg-raised: #111317;
     --surface:   #ffffff;
     --border:    #ebebeb;
     --text:      #1a1a1a;

@@ -42,76 +42,97 @@ export default function Navbar() {
   return (
     <>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
         .nb-display { font-family: var(--font-cormorant), 'Cormorant Garamond', serif; }
         .nb-sans    { font-family: var(--font-dm-sans), 'DM Sans', sans-serif; }
 
         .nb-header {
-          background: rgba(255,255,255,0.85);
-          backdrop-filter: blur(20px);
-          transition: background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease;
-        }
-
-        .nb-header.is-scrolled {
-          background: rgba(255,255,255,0.97);
-          backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(0,0,0,0.07);
-          box-shadow: 0 1px 24px rgba(0,0,0,0.06);
-        }
-
-        .nb-link {
-          color: #1a1a2e;
-          text-decoration: none;
-          font-size: 0.8rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          position: relative;
-        }
-
-        .nb-link::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          bottom: -7px;
-          width: 100%;
-          height: 1px;
-          background: #7c5cbf;
-          transform: scaleX(0);
-          transform-origin: left;
           transition: transform 0.3s ease;
         }
 
-        .nb-link:hover::after {
-          transform: scaleX(1);
+        .nb-header.is-scrolled {
+          transform: translateY(0);
         }
 
-        .nb-header:not(.is-scrolled) .nb-link,
-        .nb-header:not(.is-scrolled) .nb-brand,
-        .nb-header:not(.is-scrolled) .nb-mobile-label {
-          color: #0d0d0d;
-        }
-
-        .nb-cta {
-          min-height: 44px;
-          padding: 0.65rem 1.1rem;
-          border-radius: 4px;
-          border: none;
-          background: #0d0d0d;
+        .nb-brand {
+          text-decoration: none;
           color: #ffffff;
-          letter-spacing: 0.12em;
+          font-size: clamp(1rem, 1.8vw, 1.2rem);
+          letter-spacing: 0.24em;
           text-transform: uppercase;
-          font-size: 0.7rem;
-          font-weight: 700;
+        }
+
+        .nb-brand:hover {
+          color: #d7d7d7;
+        }
+
+        .nb-menu-btn {
+          min-width: 92px;
+          height: 44px;
+          border: 1px solid rgba(255,255,255,0.25);
+          border-radius: 999px;
+          background: rgba(10,10,10,0.45);
+          backdrop-filter: blur(10px);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          padding: 0 14px;
           cursor: pointer;
-          box-shadow: none;
+          color: #ffffff;
+          text-transform: uppercase;
+          letter-spacing: 0.18em;
+          font-size: 0.62rem;
+          transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+        }
+
+        .nb-menu-btn:hover {
+          border-color: rgba(255,255,255,0.5);
+          background: rgba(10,10,10,0.62);
+        }
+
+        .nb-burger {
+          width: 14px;
+          height: 11px;
+          position: relative;
+        }
+
+        .nb-burger-line {
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: #ffffff;
+          transform-origin: center;
+          transition: transform 0.28s ease, opacity 0.2s ease, top 0.28s ease;
+        }
+
+        .nb-burger-line.top { top: 1px; }
+        .nb-burger-line.mid { top: 5px; }
+        .nb-burger-line.bot { top: 9px; }
+
+        .nb-menu-btn.open .nb-burger-line.top {
+          top: 5px;
+          transform: rotate(45deg);
+        }
+
+        .nb-menu-btn.open .nb-burger-line.mid {
+          opacity: 0;
+        }
+
+        .nb-menu-btn.open .nb-burger-line.bot {
+          top: 5px;
+          transform: rotate(-45deg);
         }
 
         .nb-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.2);
+          background: rgba(0, 0, 0, 0.7);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.32s ease;
           z-index: 110;
         }
 
@@ -120,118 +141,196 @@ export default function Navbar() {
           pointer-events: auto;
         }
 
-        .nb-drawer {
+        .nb-panel {
           position: fixed;
           top: 0;
-          right: 0;
-          width: min(82vw, 380px);
+          left: 0;
+          width: 100%;
           height: 100vh;
-          background: #ffffff;
-          border-left: 1px solid #ebebeb;
-          transform: translateX(100%);
-          transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+          background: #0d0d0d;
+          color: #ffffff;
+          transform: translateY(-2%);
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.34s ease, transform 0.34s ease;
           z-index: 120;
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .nb-panel.open {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .nb-panel-col-left {
+          border-bottom: 1px solid rgba(255,255,255,0.12);
+          padding: 92px 28px 32px;
           display: flex;
           flex-direction: column;
-          padding: 1.2rem 1.2rem 1.8rem;
+          justify-content: space-between;
+          background:
+            radial-gradient(circle at 25% 20%, rgba(124,92,191,0.2), transparent 52%),
+            linear-gradient(160deg, rgba(255,255,255,0.03), transparent 46%);
         }
 
-        .nb-drawer.open {
-          transform: translateX(0);
+        .nb-panel-col-right {
+          padding: 36px 28px 28px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
-        .nb-drawer-link {
+        .nb-panel-title {
+          font-family: 'Syne', sans-serif;
+          font-weight: 600;
+          font-size: clamp(1.8rem, 5vw, 3.2rem);
+          line-height: 1.05;
+          letter-spacing: 0.01em;
+          margin: 0;
+        }
+
+        .nb-panel-copy {
+          margin-top: 18px;
+          max-width: 420px;
+          color: rgba(255,255,255,0.72);
+          line-height: 1.7;
+          font-size: 0.95rem;
+        }
+
+        .nb-panel-kicker {
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.55);
+          font-size: 0.62rem;
+        }
+
+        .nb-panel-meta {
+          margin-top: 18px;
+          display: grid;
+          gap: 6px;
+          color: rgba(255,255,255,0.62);
+          font-size: 0.8rem;
+        }
+
+        .nb-menu-list {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .nb-menu-link {
           text-decoration: none;
-          color: #0d0d0d;
+          color: #ffffff;
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          min-height: 52px;
-          border-bottom: 1px solid #f0f0f0;
-          letter-spacing: 0.06em;
-          font-size: 0.95rem;
-          padding: 0.6rem 0;
+          align-items: baseline;
+          border-bottom: 1px solid rgba(255,255,255,0.14);
+          padding: 18px 0;
+          transition: border-color 0.25s ease;
         }
 
-        .nb-drawer-link span:first-child {
+        .nb-menu-link:hover {
+          border-color: rgba(255,255,255,0.45);
+        }
+
+        .nb-menu-name {
+          font-size: clamp(1.6rem, 5.2vw, 3rem);
           font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-          font-size: 1.6rem;
+          letter-spacing: 0.03em;
+          line-height: 1;
         }
 
-        .nb-drawer-link span:last-child {
-          color: #7c5cbf;
-          font-family: var(--font-dm-mono), 'DM Mono', monospace;
+        .nb-menu-idx {
           font-size: 0.68rem;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.18em;
+          color: rgba(255,255,255,0.55);
+        }
+
+        @media (min-width: 1024px) {
+          .nb-panel {
+            grid-template-columns: minmax(360px, 46%) minmax(420px, 54%);
+          }
+
+          .nb-panel-col-left {
+            border-bottom: 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            padding: 120px 58px 54px;
+          }
+
+          .nb-panel-col-right {
+            padding: 120px 58px 54px;
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .nb-header,
           .nb-overlay,
-          .nb-drawer,
-          .nb-link::after {
+          .nb-panel {
             transition: none;
           }
         }
       `}</style>
 
-      <header className={`nb-header fixed top-0 left-0 right-0 z-[100] w-full box-border h-[72px] flex items-center justify-center ${scrolled || open ? "is-scrolled" : ""}`}>
-        <div className="w-full max-w-[1240px] flex items-center justify-between px-6 md:px-10 lg:px-14 mx-auto box-border">
-          {!open && (
-            <Link
-              href="/"
-              onClick={close}
-              className="nb-brand nb-display text-xl md:text-2xl font-semibold tracking-[0.18em] uppercase text-[#0d0d0d] select-none"
-            >
-                TEZH<span className="text-[#7c5cbf]">.</span>
-            </Link>
-          )}
-
-          <nav className="hidden lg:flex items-center gap-8">
-            {menuItems.map((item) => (
-              <Link key={item.link} href={item.link} className="nb-link nb-sans">
-                {item.name}
-              </Link>
-            ))}
-            <Link href="/contact" className="nb-cta nb-sans shimmer-btn">
-              Let&apos;s Talk
-            </Link>
-          </nav>
+      <header className={`nb-header fixed top-5 left-0 right-0 z-[130] px-5 sm:px-8 ${scrolled || open ? "is-scrolled" : ""}`}>
+        <div className="w-full flex items-center justify-between">
+          <Link
+            href="/"
+            onClick={close}
+            className="nb-brand nb-display font-semibold"
+          >
+            TEZHT
+          </Link>
 
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="lg:hidden flex items-center justify-center bg-transparent border border-[#ebebeb] rounded-sm min-h-[44px] min-w-[44px] p-2 cursor-pointer text-[#0d0d0d]"
+            className={`nb-menu-btn ${open ? "open" : ""}`}
           >
-            <span className="nb-mobile-label nb-sans text-xs tracking-[0.12em] uppercase">{open ? "Close" : "Menu"}</span>
+            <span className="nb-sans">{open ? "Close" : "Menu"}</span>
+            <span className="nb-burger" aria-hidden="true">
+              <span className="nb-burger-line top" />
+              <span className="nb-burger-line mid" />
+              <span className="nb-burger-line bot" />
+            </span>
           </button>
         </div>
       </header>
 
       <div className={`nb-overlay ${open ? "open" : ""}`} onClick={close} />
-      <aside className={`nb-drawer ${open ? "open" : ""}`} aria-hidden={!open}>
-        <div className="flex items-center justify-between pb-4 border-b border-[#ebebeb]">
-          <span className="nb-display text-2xl tracking-[0.1em] text-[#0d0d0d]">TEZH<span className="text-[#7c5cbf]">.</span></span>
-          <button
-            onClick={close}
-            className="nb-sans min-h-[44px] min-w-[44px] border border-[#ebebeb] text-[#0d0d0d] text-xs tracking-[0.14em] uppercase"
-          >
-            Close
-          </button>
+      <section className={`nb-panel ${open ? "open" : ""}`} aria-hidden={!open}>
+        <div className="nb-panel-col-left">
+          <div>
+            <p className="nb-sans nb-panel-kicker">Tezht Technologies</p>
+            <h2 className="nb-panel-title">The Future of Business - Now.</h2>
+            <p className="nb-sans nb-panel-copy">
+              We build digital systems, automation workflows, and data-first products that help teams
+              scale with confidence. Partner with us to design, ship, and optimize what matters.
+            </p>
+          </div>
+          <div className="nb-sans nb-panel-meta">
+            <span>hello@tezht.com</span>
+            <span>+91 00000 00000</span>
+            <span>Mon - Fri, 9:00 AM - 6:00 PM</span>
+          </div>
         </div>
-        <nav className="pt-5 flex flex-col gap-1">
-          {menuItems.map((item) => (
-            <a key={item.link} href={item.link} onClick={(e) => navigate(e, item.link)} className="nb-drawer-link">
-              <span>{item.name}</span>
-              <span>{item.label}</span>
-            </a>
-          ))}
-        </nav>
-        <div className="mt-auto pt-8 border-t border-[#ebebeb]">
-          <p className="nb-sans text-[#666666] text-xs leading-relaxed">hello@tezh.com</p>
-          <p className="nb-sans text-[#7c5cbf] text-[0.62rem] tracking-[0.2em] uppercase mt-2">Tezh Technologies</p>
+
+        <div className="nb-panel-col-right">
+          <nav>
+            <ul className="nb-menu-list">
+              {menuItems.map((item) => (
+                <li key={item.link}>
+                  <a href={item.link} onClick={(e) => navigate(e, item.link)} className="nb-menu-link">
+                    <span className="nb-menu-name">{item.name}</span>
+                    <span className="nb-menu-idx">{item.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-      </aside>
+      </section>
     </>
   );
 }

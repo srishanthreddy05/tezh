@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #ffffff !important;
-  --bg-base: #ffffff !important;
-  --bg-raised: #faf9ff !important;
-  --bg-surface: #ffffff !important;
-  --surface: #ffffff !important;
-  --primary: #0d0d0d !important;
-  --accent: #7c5cbf !important;
-  --gold: #7c5cbf !important;
-  --text: #1a1a1a !important;
-  --text-primary: #1a1a1a !important;
-  --muted: #666666 !important;
-  --text-secondary: #666666 !important;
-  --faint: #999999 !important;
-  --text-muted: #999999 !important;
-  --border: #ebebeb !important;
-  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+  --bg: #0b0d10 !important;
+  --bg-base: #0b0d10 !important;
+  --bg-raised: #111317 !important;
+  --bg-surface: #171a1f !important;
+  --surface: #171a1f !important;
+  --primary: rgba(255, 255, 255, 0.92) !important;
+  --accent: #8e96a2 !important;
+  --gold: #8e96a2 !important;
+  --text: rgba(255, 255, 255, 0.92) !important;
+  --text-primary: rgba(255, 255, 255, 0.92) !important;
+  --muted: rgba(255, 255, 255, 0.45) !important;
+  --text-secondary: rgba(255, 255, 255, 0.45) !important;
+  --faint: rgba(255, 255, 255, 0.18) !important;
+  --text-muted: rgba(255, 255, 255, 0.28) !important;
+  --border: rgba(255, 255, 255, 0.1) !important;
+  --card-shadow: 0 6px 26px rgba(0, 0, 0, 0.35) !important;
 }
 
 html,
@@ -121,21 +121,3 @@ small,
   }
 }
 
-/* Force a site-wide dark palette across all page-level style blocks */
-:root {
-  --bg: #0b0d10 !important;
-  --bg-base: #0b0d10 !important;
-  --bg-raised: #111317 !important;
-  --surface: #171a1f !important;
-  --bg-surface: #171a1f !important;
-
-  --text: rgba(255,255,255,0.92) !important;
-  --text-primary: rgba(255,255,255,0.92) !important;
-  --text-secondary: rgba(255,255,255,0.45) !important;
-  --muted: rgba(255,255,255,0.45) !important;
-  --text-muted: rgba(255,255,255,0.28) !important;
-  --faint: rgba(255,255,255,0.18) !important;
-
-  --border: rgba(255,255,255,0.10) !important;
-  --accent: #8e96a2 !important;
-}

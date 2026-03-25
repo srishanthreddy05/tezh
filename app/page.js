@@ -67,6 +67,8 @@ const stats = [
 ];
 
 const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&display=swap');
+
   .hp-page {
     background: var(--bg);
     color: var(--text);
@@ -79,7 +81,7 @@ const CSS = `
   }
 
   .hp-section-dark {
-    background: #faf9ff;
+    background: var(--bg-raised);
   }
 
   .hp-section-dark .hp-title,
@@ -160,11 +162,12 @@ const CSS = `
   .hp-hero-title {
     margin: 1.2rem auto 0;
     max-width: 960px;
-    font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+    font-family: "Syne", sans-serif;
+    font-weight: 600;
     font-size: clamp(2.5rem, 7.5vw, 6.4rem);
-    line-height: 0.96;
+    line-height: 1.02;
     color: #ffffff;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     animation: hpFadeUp 0.6s ease both;
     text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
   }
@@ -172,7 +175,7 @@ const CSS = `
   .hp-hero-title em {
     font-style: italic;
     color: var(--accent);
-    font-weight: 500;
+    font-weight: 300;
   }
 
   .hp-title-underline {
@@ -251,7 +254,7 @@ const CSS = `
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     overflow: hidden;
-    background: #faf9ff;
+    background: var(--bg-raised);
   }
 
   .hp-ticker {
@@ -285,8 +288,10 @@ const CSS = `
 
   .hp-cards {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 16px;
+    max-width: 760px;
+    margin: 0 auto;
   }
 
   .hp-card {
@@ -341,8 +346,8 @@ const CSS = `
     display: inline-grid;
     place-items: center;
     border-radius: 999px;
-    border: 1px solid #e5dbf5;
-    background: #f7f3ff;
+    border: 1px solid var(--border);
+    background: var(--surface);
   }
 
   .hp-num {
@@ -381,8 +386,8 @@ const CSS = `
   }
 
   .hp-section-dark .hp-step {
-    background: #ffffff;
-    border-color: #ebebeb;
+    background: var(--surface);
+    border-color: var(--border);
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
   }
 
@@ -397,7 +402,7 @@ const CSS = `
   .hp-stats {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    border: 1px solid #d7dfef;
+    border: 1px solid var(--border);
     background: var(--surface);
     box-shadow: 0 10px 28px rgba(9, 18, 46, 0.08);
     border-radius: 14px;
@@ -484,10 +489,6 @@ const CSS = `
   }
 
   @media (max-width: 1024px) {
-    .hp-cards {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .hp-footer-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -713,7 +714,7 @@ function Pillars() {
 
 function Services() {
   return (
-    <section id="services" className="hp-section" style={{ background: "#fbf9f5" }}>
+    <section id="services" className="hp-section" style={{ background: "var(--bg-raised)" }}>
       <div className="hp-container">
         <Reveal>
           <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
@@ -788,7 +789,7 @@ function Process() {
 
 function SocialProof() {
   return (
-    <section className="hp-section" style={{ background: "#fbf9f5" }}>
+    <section className="hp-section" style={{ background: "var(--bg-raised)" }}>
       <div className="hp-container">
         <Reveal>
           <div style={{ textAlign: "center", marginBottom: "1.7rem" }}>
