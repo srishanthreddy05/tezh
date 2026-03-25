@@ -748,9 +748,11 @@ function Positioning() {
                   className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl"
                   style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}
                 >
-                  We go beyond delivering software. We create future-ready technologies that fuel growth,
-                  unlock opportunities, and transform how our clients operate - with unwavering commitment
-                  to quality, scalability, and measurable outcomes.
+                  At Tezh Technologies, we go far beyond software delivery. As your trusted IT partner,
+                  we craft innovative, future-proof technologies that power business growth, open new
+                  doors, and streamline operations—especially through expert infrastructure management
+                  and network maintenance. Our unwavering focus on quality, scalability, and your success
+                  turns every project into a lasting story of achievement.
                 </p>
                 <div className="mt-6">
                   <a
@@ -944,9 +946,11 @@ function Founder() {
               A single mission: empower businesses to thrive.
             </h2>
             <p className="hp-body" style={{ marginTop: "1rem" }}>
-              We go beyond delivering software. We create future-ready technologies that fuel growth,
-              unlock opportunities, and transform how our clients operate - with unwavering commitment
-              to quality, scalability, and measurable outcomes.
+              At Tezh Technologies, we go far beyond software delivery. As your trusted IT partner, we craft
+              innovative, future-proof technologies that power business growth, open new doors, and streamline
+              operations—especially through expert infrastructure management and network maintenance. Our
+              unwavering focus on quality, scalability, and your success turns every project into a lasting
+              story of achievement.
             </p>
             <div style={{ marginTop: "1.1rem", borderLeft: "1px solid var(--accent)", paddingLeft: "0.9rem" }}>
               <strong style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", color: "var(--primary)", fontSize: "1.2rem" }}>Tej Ponnala</strong>
