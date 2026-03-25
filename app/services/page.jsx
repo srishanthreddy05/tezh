@@ -59,6 +59,8 @@ const CSS = `
 
   .sv-display { font-family: 'Syne', sans-serif; }
   .sv-body    { font-family: 'DM Sans', sans-serif; }
+  .sv-bc { color: var(--faint); text-decoration: none; font-size: 0.75rem; transition: color 0.2s ease; }
+  .sv-bc:hover { color: var(--muted); }
 
   /* Noise grain */
   .sv-grain::before {
@@ -226,74 +228,65 @@ function ServiceHero() {
   return (
     <section
       ref={ref}
-      className="sv-grain sv-grid-bg relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden"
-      style={{ background: "var(--bg)" }}
+      className="sv-grain relative min-h-[90vh] overflow-hidden"
     >
+      <img
+        src="/images/servicehero.jpg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/45 via-black/25 to-black/55" />
+
       {/* Orbs */}
       <Orb style={{ left: "8%",  top: "10%", width: 480, height: 480, animDelay: 0 }} />
       <Orb style={{ right: "5%", top: "50%", width: 380, height: 380, animDelay: 2 }} />
       <Orb style={{ left: "40%", bottom: "5%", width: 300, height: 300, animDelay: 4 }} />
 
       <motion.div
-        className="relative z-10 max-w-5xl mx-auto"
+        className="relative z-10 max-w-5xl mx-auto px-6 md:px-10 lg:px-12 min-h-[90vh] flex items-center text-center pt-0 sm:pt-2 md:pt-4"
         style={{ y, opacity }}
       >
-        {/* Eyebrow */}
-        <Reveal delay={0}>
-          <span className="sv-body inline-flex items-center gap-3 text-[0.62rem] tracking-[0.3em] uppercase mb-8 block"
-            style={{ color: "var(--faint)" }}>
-            <span className="inline-block w-8 h-[1px] bg-white/15" />
-            Our Capabilities
-            <span className="inline-block w-8 h-[1px] bg-white/15" />
-          </span>
-        </Reveal>
+        <div className="w-full">
+          <Reveal delay={0}>
+            <span className="sv-body inline-flex items-center gap-3 text-[0.62rem] tracking-[0.3em] uppercase mb-8 text-white/70">
+              <span className="inline-block w-8 h-[1px] bg-white/40" />
+              Our Capabilities
+              <span className="inline-block w-8 h-[1px] bg-white/40" />
+            </span>
+          </Reveal>
 
-        {/* Headline */}
-        <Reveal delay={0.1} y={60}>
-          <h1
-            className="sv-display font-semibold leading-[1.04] tracking-tight mb-7"
-            style={{ fontSize: "clamp(2.6rem, 6.5vw, 5.8rem)", color: "var(--text)" }}
-          >
-            Engineering Digital{" "}
-            <em style={{ fontStyle: "italic", fontWeight: 300, color: "var(--accent)" }}>
-              Excellence
-            </em>
-            <br />
-            Across Strategy, Systems{" "}
-            <span style={{ color: "var(--faint)" }}>&amp;</span> Scale
-          </h1>
-        </Reveal>
+          <Reveal delay={0.1} y={60}>
+            <h1 className="sv-display font-semibold leading-[1.04] tracking-tight text-white mb-7" style={{ fontSize: "clamp(2.6rem, 6.5vw, 5.8rem)" }}>
+              Engineering Digital{" "}
+              <em style={{ fontStyle: "italic", fontWeight: 300, color: "#b6bfd0" }}>
+                Excellence
+              </em>
+              <br />
+              Across Strategy, Systems &amp; Scale
+            </h1>
+          </Reveal>
 
-        <Reveal delay={0.22}>
-          <p
-            className="sv-body text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12"
-            style={{ color: "var(--muted)" }}
-          >
-            We build secure, scalable, and intelligent systems that power business
-            growth — from first concept to full-scale deployment.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.32}>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact" className="sv-cta">
-              Start a Project <span>→</span>
-            </a>
-            <a
-              href="#services"
-              className="sv-body inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm transition-all duration-300 hover:text-white"
-              style={{
-                border: "1px solid var(--border)",
-                color: "var(--muted)",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = "#8c8c8c"}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = "var(--border)"}
-            >
-              Explore Services ↓
-            </a>
-          </div>
-        </Reveal>
+          <Reveal delay={0.32}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/contact" className="sv-cta">
+                Start a Project <span>→</span>
+              </a>
+              <a
+                href="#services"
+                className="sv-body inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm transition-all duration-300 hover:bg-white/10"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  color: "rgba(255,255,255,0.82)",
+                  textDecoration: "none",
+                }}
+              >
+                Explore Services ↓
+              </a>
+            </div>
+          </Reveal>
+        </div>
       </motion.div>
 
       {/* Scroll hint */}

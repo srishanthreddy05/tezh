@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
+import Link from "next/link";
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 /* ─── Animated counter ─────────────────────────────────────────────── */
@@ -108,21 +109,44 @@ export default function AboutPage() {
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
 
         :root {
-          --bg-base:    #ffffff;
-          --bg-raised: #111317;
-          --bg-surface: #ffffff;
-          --border:     #ebebeb;
-          --text-primary: #1a1a1a;
-          --text-secondary: #666666;
-          --text-muted: #8c8c8c;
-          --accent: #7c5cbf;
+          --bg-base: rgba(6, 8, 12, 0.44);
+          --bg-raised: rgba(6, 8, 12, 0.62);
+          --bg-surface: rgba(255, 255, 255, 0.06);
+          --border: rgba(255, 255, 255, 0.14);
+          --text-primary: rgba(255, 255, 255, 0.96);
+          --text-secondary: rgba(255, 255, 255, 0.72);
+          --text-muted: rgba(255, 255, 255, 0.45);
+          --accent: #9b87d6;
         }
 
         * { box-sizing: border-box; }
 
-        .ab-page { background: var(--bg-base); color: var(--text-primary); }
+        .ab-page {
+          position: relative;
+          isolation: isolate;
+          background-image: url('/images/herotwo.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          color: var(--text-primary);
+        }
+        .ab-page::before {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.64) 50%, rgba(0,0,0,0.74) 100%);
+          pointer-events: none;
+          z-index: 0;
+        }
+        .ab-page > * {
+          position: relative;
+          z-index: 1;
+        }
         .ab-display { font-family: 'Syne', sans-serif; }
         .ab-body    { font-family: 'DM Sans', sans-serif; }
+        .ab-bc { color: var(--text-muted); text-decoration: none; font-size: 0.75rem; transition: color 0.2s ease; }
+        .ab-bc:hover { color: var(--text-secondary); }
 
         /* Noise grain overlay on sections */
         .ab-grain {
@@ -199,7 +223,7 @@ export default function AboutPage() {
           <GridOrb x={75}  y={60}  size={400} opacity={0.5} delay={2} />
           <GridOrb x={50}  y={85}  size={300} opacity={0.4} delay={4} />
 
-          <div className="relative z-10 max-w-5xl mx-auto">
+          <div className="relative z-10 max-w-5xl mx-auto pt-0 sm:pt-2 md:pt-4">
             {/* Eyebrow */}
             <Reveal delay={0}>
               <span className="ab-body inline-flex items-center gap-3 text-[0.65rem] tracking-[0.3em] uppercase text-white/35 mb-8">
@@ -222,19 +246,11 @@ export default function AboutPage() {
               </h1>
             </Reveal>
 
-            <Reveal delay={0.25}>
-              <p className="ab-body text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12"
-                style={{ color: "var(--text-secondary)" }}>
-                We help ambitious companies unlock growth and efficiency with cutting-edge
-                digital solutions, crafted by experts who care deeply about outcomes.
-              </p>
-            </Reveal>
-
             <Reveal delay={0.35}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact"
-                  className="cta-btn ab-display inline-block px-8 py-4 text-sm font-medium tracking-wide text-white rounded-full transition-all duration-300 hover:scale-[1.02]"
-                  style={{ background: "var(--bg-surface)" }}>
+                  className="cta-btn ab-display inline-block px-8 py-4 text-sm font-medium tracking-wide text-black rounded-full transition-all duration-300 hover:scale-[1.02]"
+                  style={{ background: "#ffffff" }}>
                   Start Your Project
                 </a>
                 <a href="#founder"

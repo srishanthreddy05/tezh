@@ -302,6 +302,32 @@ const CSS = `
     white-space: nowrap;
   }
 
+  .hp-services-ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+  }
+
+  .hp-services-ticker-track {
+    display: flex;
+    width: max-content;
+    animation: hpMarquee 24s linear infinite;
+    will-change: transform;
+  }
+
+  .hp-services-ticker-item {
+    padding: 0.9rem 1.5rem;
+    font-family: var(--font-dm-mono), "DM Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+  }
+
   .hp-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -549,6 +575,16 @@ const CSS = `
     .hp-ticker {
       animation-duration: 34s;
     }
+
+    .hp-services-ticker-item {
+      padding: 0.75rem 1rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+    }
+
+    .hp-services-ticker-track {
+      animation-duration: 34s;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -685,28 +721,48 @@ function Positioning() {
           ))}
         </div>
       </div>
-      <div className="hp-section hp-section-dark">
-        <div className="hp-container hp-grid-2">
-          <Reveal>
-            <div>
-              <span className="hp-eyebrow">Strategic Positioning</span>
-              <h2 className="hp-title" style={{ fontSize: "clamp(2rem, 5vw, 3.4rem)", marginTop: "0.9rem" }}>
-                Reinventing Business Through Intelligent Systems
-              </h2>
-            </div>
-          </Reveal>
-          <Reveal>
-            <div>
-              <p className="hp-body">
-                We go beyond delivering software. We create future-ready technologies that fuel growth,
-                unlock opportunities, and transform how our clients operate - with unwavering commitment
-                to quality, scalability, and measurable outcomes.
-              </p>
-              <div style={{ marginTop: "1rem" }}>
-                <a href="/about" className="hp-btn hp-btn-secondary">Our Story</a>
+      <div
+        className="relative w-full bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url("/images/herotwo.jpg")' }}
+      >
+        <div className="absolute inset-0 bg-black/45" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 lg:px-12 py-20 md:py-28">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 md:p-10 shadow-[0_0_40px_rgba(255,255,255,0.06)]">
+            <Reveal>
+              <div>
+                <span className="inline-flex items-center gap-3 text-[0.68rem] tracking-[0.24em] uppercase text-white/70">
+                  <span className="inline-block h-px w-10 bg-white/35" />
+                  Strategic Positioning
+                </span>
+                <h2
+                  className="mt-4 text-white font-semibold leading-tight"
+                  style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", fontSize: "clamp(2rem, 5vw, 3.4rem)" }}
+                >
+                  Reinventing Business Through Intelligent Systems
+                </h2>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+            <Reveal>
+              <div>
+                <p
+                  className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl"
+                  style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}
+                >
+                  We go beyond delivering software. We create future-ready technologies that fuel growth,
+                  unlock opportunities, and transform how our clients operate - with unwavering commitment
+                  to quality, scalability, and measurable outcomes.
+                </p>
+                <div className="mt-6">
+                  <a
+                    href="/about"
+                    className="inline-flex items-center rounded-full px-6 py-3 border border-white/20 text-white text-sm tracking-[0.08em] uppercase transition-all duration-300 hover:bg-white/10"
+                  >
+                    Our Story
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>
@@ -743,8 +799,13 @@ function Pillars() {
 
 function Services() {
   return (
-    <section id="services" className="hp-section" style={{ background: "var(--bg-raised)" }}>
-      <div className="hp-container">
+    <section
+      id="services"
+      className="hp-section relative overflow-hidden bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: 'url("/images/servicehero.jpg")' }}
+    >
+      <div className="absolute inset-0 bg-black/45" />
+      <div className="hp-container relative z-10">
         <Reveal>
           <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
             <div>
@@ -776,6 +837,29 @@ function Services() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ServicesTicker() {
+  const items = [
+    "IT Services",
+    "Automation",
+    "Data Analytics",
+    "Cloud",
+    "AI Agents",
+  ];
+  const sequence = [...items, ...items, ...items, ...items];
+
+  return (
+    <div className="hp-services-ticker-wrap">
+      <div className="hp-services-ticker-track">
+        {[...sequence, ...sequence].map((item, i) => (
+          <span key={`${item}-${i}`} className="hp-services-ticker-item">
+            {item} •
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -970,6 +1054,7 @@ export default function LandingPage() {
         <Hero />
         <Positioning />
         <Pillars />
+        <ServicesTicker />
         <Services />
         <Process />
         <SocialProof />

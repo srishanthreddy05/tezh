@@ -268,15 +268,6 @@ function Hero() {
         className="relative z-10 max-w-4xl mx-auto"
         style={{ y: yShift, opacity: fadeOut }}
       >
-        <Reveal delay={0}>
-          <div className="sp-body flex items-center justify-center gap-2 mb-8 text-[0.7rem]"
-            style={{ color: "var(--faint)" }}>
-            <Link href="/" className="sp-bc">Home</Link>
-            <span>/</span>
-            <span style={{ color: "var(--muted)" }}>Contact Us</span>
-          </div>
-        </Reveal>
-
         <Reveal delay={0.05}>
           <span className="sp-body inline-flex items-center gap-3 text-[0.62rem] tracking-[0.3em] uppercase mb-7"
             style={{ color: "var(--faint)" }}>
