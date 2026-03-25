@@ -389,7 +389,6 @@ function Commitment() {
             <div className="grid grid-cols-2 gap-4">
               {[
                 { value: "50+",    label: "Team Members" },
-                { value: "12+",    label: "Nationalities" },
                 { value: "4.8★",   label: "Avg. Employee Rating" },
                 { value: "100%",   label: "Remote-Friendly Roles" },
               ].map((s) => (

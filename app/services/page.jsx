@@ -394,7 +394,7 @@ function ServiceGrid() {
         <div className="sv-divider mb-14" />
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
           {services.map((s, i) => (
             <ServiceCard key={s.title} service={s} index={i} />
           ))}

@@ -205,6 +205,10 @@ const CSS = `
     background: rgba(255, 255, 255, 0.06);
   }
 
+  .hp-hero .hp-btn-primary {
+    color: #0d0d0d;
+  }
+
   .hp-actions {
     margin-top: 2.2rem;
     display: flex;
@@ -219,35 +223,60 @@ const CSS = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.85rem 1.45rem;
-    border-radius: 4px;
-    letter-spacing: 0.11em;
+    position: relative;
+    overflow: hidden;
+    padding: 0.9rem 1.9rem;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    font-size: 0.72rem;
-    font-weight: 700;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, color 0.28s ease, background-color 0.28s ease, border-color 0.28s ease;
+  }
+
+  .hp-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 58%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+    transition: left 0.55s ease;
+    pointer-events: none;
   }
 
   .hp-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  .hp-btn:hover::before {
+    left: 150%;
   }
 
   .hp-btn-primary {
-    background: var(--accent);
-    color: #ffffff;
-    border: 1px solid var(--accent);
-    box-shadow: 0 8px 32px rgba(124, 92, 191, 0.3);
+    background: rgba(255, 255, 255, 0.92);
+    color: #0d0d0d;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
   }
 
   .hp-btn-secondary {
-    color: var(--primary);
-    border: 1px solid var(--primary);
-    background: transparent;
+    color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .hp-btn-primary:hover {
-    background: #6a4daa;
-    box-shadow: 0 8px 32px rgba(124, 92, 191, 0.35);
+    background: #ffffff;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.26);
+  }
+
+  .hp-btn-secondary:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
   }
 
   .hp-ticker-wrap {
@@ -288,9 +317,9 @@ const CSS = `
 
   .hp-cards {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
-    max-width: 760px;
+    max-width: 980px;
     margin: 0 auto;
   }
 
@@ -427,7 +456,7 @@ const CSS = `
   }
 
   .hp-footer {
-    background: #1a1a2e;
+    background: #000000;
     border-top: 1px solid var(--accent);
     color: #f8f6f2;
     padding: clamp(56px, 8vw, 82px) clamp(20px, 4.5vw, 56px) 28px;
@@ -831,11 +860,9 @@ function Founder() {
               A single mission: empower businesses to thrive.
             </h2>
             <p className="hp-body" style={{ marginTop: "1rem" }}>
-              We go beyond delivering software solutions. We create innovative, future-ready
-              technologies that fuel growth, unlock new opportunities, and transform the way
-              our clients operate. With unwavering commitment to quality, scalability, and
-              client success, Tezh Technologies doesn&apos;t just build solutions - we build
-              long-term success stories for every client we serve.
+              We go beyond delivering software. We create future-ready technologies that fuel growth,
+              unlock opportunities, and transform how our clients operate - with unwavering commitment
+              to quality, scalability, and measurable outcomes.
             </p>
             <div style={{ marginTop: "1.1rem", borderLeft: "1px solid var(--accent)", paddingLeft: "0.9rem" }}>
               <strong style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", color: "var(--primary)", fontSize: "1.2rem" }}>Tej Ponnala</strong>
@@ -879,7 +906,6 @@ function Footer() {
   const links = {
     Company: [
       { label: "About Us", href: "/about" },
-      { label: "Blog", href: "/blog" },
       { label: "Careers", href: "/careers" },
       { label: "Case Studies", href: "/case-studies" },
       { label: "Contact Us", href: "/contact" },
@@ -931,10 +957,6 @@ function Footer() {
 
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
         <span style={{ color: "#d2cdc3", fontSize: "0.78rem" }}>© 2026 · Tezh Technologies · All rights reserved.</span>
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <a href="#" style={{ color: "#f8f6f2", fontSize: "0.78rem" }}>Privacy Policy</a>
-          <a href="#" style={{ color: "#f8f6f2", fontSize: "0.78rem" }}>Terms of Service</a>
-        </div>
       </div>
     </footer>
   );

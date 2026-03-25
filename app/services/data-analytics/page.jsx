@@ -54,7 +54,7 @@ const whyChoose = [
 const stats = [
   { value: "10x",  label: "Avg. Reporting Speed Gain" },
   { value: "98%",  label: "Data Accuracy Rate" },
-  { value: "70+",  label: "Analytics Projects Delivered" },
+  { value: "50 +", label: "Analytics Projects Delivered" },
   { value: "100%", label: "GDPR & Compliance Ready" },
 ];
 

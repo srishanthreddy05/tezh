@@ -53,8 +53,8 @@ const whyChoose = [
 
 const stats = [
   { value: "99.9%", label: "Uptime SLA" },
-  { value: "<2h",   label: "Avg Response Time" },
-  { value: "100+",  label: "Infrastructure Projects" },
+  { value: "15 min", label: "Avg Response Time" },
+  { value: "25+",    label: "Infrastructure Projects" },
   { value: "24/7",  label: "Monitoring & Support" },
 ];
 

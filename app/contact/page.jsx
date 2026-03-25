@@ -352,7 +352,7 @@ function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
 
           {/* ── Left: Info ── */}
-          <div>
+          <div className="order-2">
             <Reveal>
               <span className="sp-body text-[0.62rem] tracking-[0.3em] uppercase block mb-4"
                 style={{ color: "var(--faint)" }}>
@@ -432,7 +432,7 @@ function ContactSection() {
           </div>
 
           {/* ── Right: Form ── */}
-          <Reveal delay={0.15}>
+          <Reveal delay={0.15} className="order-1">
             {submitted ? (
               <motion.div
                 className="sp-success"

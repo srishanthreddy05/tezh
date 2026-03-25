@@ -9,92 +9,17 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence } from "fra
 const caseStudies = [
   {
     id: "01",
-    icon: "⬡",
-    tag: "Automation · AI",
-    title: "E-commerce Automation Breakthrough",
-    client: "Major Online Retailer",
-    challenge: "An overwhelming support load and slow order processing were straining operations and frustrating customers at scale.",
-    solution: "Implemented AI chatbots to handle routine inquiries and deployed RPA bots to automate returns and order tracking end-to-end.",
-    outcomes: [
-      { value: "70%", label: "Drop in support tickets" },
-      { value: "32%", label: "Rise in customer satisfaction" },
-      { value: "~50%", label: "Faster order-to-shipment time" },
-      { value: "4mo", label: "Full ROI payback period" },
-    ],
-  },
-  {
-    id: "02",
     icon: "◈",
-    tag: "Data Analytics · Healthcare",
-    title: "Healthcare Data Integration",
-    client: "Regional Hospital Network",
-    challenge: "Patient records were scattered across incompatible legacy systems, slowing diagnosis and creating compliance risk.",
-    solution: "Designed a secure data warehouse, integrated disparate databases, and built real-time dashboards for physicians and administrators.",
+    tag: "Healthcare · IT Infrastructure",
+    title: "Trusted by Healthcare Providers",
+    client: "Specialty Care Clinics",
+    challenge: "Since 2021, TezhTechnologies has supported healthcare organizations with secure and dependable IT infrastructure that keeps their operations running without disruption.",
+    solution: "Delivered stable, secure infrastructure and ongoing support tailored for healthcare operations with a focus on reliability, continuity, and compliance-ready practices.",
     outcomes: [
-      { value: "Instant", label: "Unified patient history access" },
-      { value: "↓", label: "Treatment delays eliminated" },
-      { value: "100%", label: "Regulatory compliance achieved" },
-      { value: "↓", label: "Audit risk significantly reduced" },
-    ],
-  },
-  {
-    id: "03",
-    icon: "◎",
-    tag: "Automation · FinTech",
-    title: "Financial Compliance Automation",
-    client: "Mid-Size Bank",
-    challenge: "Thousands of staff hours consumed by manual compliance checks, with repeated late-report penalties eating into margins.",
-    solution: "Introduced RPA bots that automatically validate transactions against regulatory requirements on a real-time basis.",
-    outcomes: [
-      { value: "50%", label: "Reduction in manual compliance effort" },
-      { value: "£0", label: "Late-report penalties since launch" },
-      { value: "100%", label: "Regulatory deadlines met consistently" },
-      { value: "↑", label: "Staff redeployed to strategic work" },
-    ],
-  },
-  {
-    id: "04",
-    icon: "◉",
-    tag: "IoT · Predictive Analytics",
-    title: "Manufacturing Predictive Maintenance",
-    client: "Industrial Manufacturer",
-    challenge: "Unplanned equipment downtime was disrupting production schedules and costing millions in emergency maintenance and lost output.",
-    solution: "Installed IoT sensors across production lines and applied machine-learning models to predict failures before they occurred.",
-    outcomes: [
-      { value: "40%", label: "Reduction in equipment downtime" },
-      { value: "Millions", label: "Saved in maintenance costs" },
-      { value: "↑", label: "Production schedule reliability" },
-      { value: "↑", label: "Customer satisfaction improved" },
-    ],
-  },
-  {
-    id: "05",
-    icon: "⬡",
-    tag: "Data Analytics · Retail",
-    title: "Retail Customer Insights Platform",
-    client: "National Retail Chain",
-    challenge: "No clear visibility into buying patterns across hundreds of stores — leaving inventory planning reactive and product placement guesswork.",
-    solution: "Built an analytics platform consolidating sales data with predictive models to recommend optimal product placements chain-wide.",
-    outcomes: [
-      { value: "18%", label: "Increase in average basket size" },
-      { value: "↓", label: "Excess stock and waste reduced" },
-      { value: "↑", label: "Inventory planning accuracy" },
-      { value: "Stores", label: "Unified data across all locations" },
-    ],
-  },
-  {
-    id: "06",
-    icon: "◈",
-    tag: "Cloud · Infrastructure",
-    title: "SaaS Startup Cloud Scaling",
-    client: "High-Growth SaaS Company",
-    challenge: "Frequent outages during traffic spikes were damaging reputation, stalling product releases, and limiting growth capacity.",
-    solution: "Migrated infrastructure to a hybrid cloud with auto-scaling capabilities engineered for unpredictable, high-demand workloads.",
-    outcomes: [
-      { value: "25%", label: "Drop in infrastructure costs" },
-      { value: "3x", label: "User base supported — no new hardware" },
-      { value: "↑", label: "Application response times" },
-      { value: "↑", label: "Faster product release cadence" },
+      { value: "Texas Specialty Clinic", label: "Specialty Care Clinic" },
+      { value: "ASP Cares", label: "Specialty Care Clinic" },
+      { value: "Crescent Regional Hospital", label: "Regional Hospital" },
+      { value: "Hill Regional Hospital", label: "Regional Hospital" },
     ],
   },
 ];
@@ -261,6 +186,10 @@ function Orb({ style }) {
 /* ─── Case Study Modal ──────────────────────────────────────────────── */
 
 function CaseModal({ study, onClose }) {
+  const uniqueOutcomes = study
+    ? study.outcomes.filter((o, idx, arr) => arr.findIndex((x) => x.value === o.value) === idx)
+    : [];
+
   return (
     <AnimatePresence>
       {study && (
@@ -349,8 +278,8 @@ function CaseModal({ study, onClose }) {
                 Key Outcomes
               </span>
               <div className="grid grid-cols-2 gap-3">
-                {study.outcomes.map((o) => (
-                  <div key={o.label} className="sp-outcome">
+                {uniqueOutcomes.map((o, idx) => (
+                  <div key={`${o.label}-${o.value}-${idx}`} className="sp-outcome">
                     <span className="sp-display font-semibold block mb-1"
                       style={{ fontSize: "1.5rem", color: "var(--text)" }}>
                       {o.value}
@@ -603,6 +532,9 @@ function CaseStudiesGrid({ onSelect }) {
 function CaseCard({ study, index, onSelect }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
+  const previewOutcomes = study.outcomes
+    .filter((o, idx, arr) => arr.findIndex((x) => x.value === o.value) === idx)
+    .slice(0, 2);
 
   return (
     <motion.div
@@ -652,8 +584,8 @@ function CaseCard({ study, index, onSelect }) {
           gridTemplateColumns: "1fr 1fr",
           gap: 8,
         }}>
-          {study.outcomes.slice(0, 2).map((o) => (
-            <div key={o.label} className="sp-outcome">
+          {previewOutcomes.map((o, idx) => (
+            <div key={`${o.label}-${o.value}-${idx}`} className="sp-outcome">
               <span className="sp-display font-semibold block"
                 style={{ fontSize: "1.1rem", color: "var(--text)" }}>
                 {o.value}

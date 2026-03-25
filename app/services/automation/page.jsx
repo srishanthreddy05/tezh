@@ -47,8 +47,8 @@ const whyChoose = [
 
 const stats = [
   { value: "80%",  label: "Avg. Manual Effort Saved" },
-  { value: "<1d",  label: "Time-to-First Automation" },
-  { value: "50+",  label: "Automation Projects Delivered" },
+  { value: "6 hrs +", label: "Time-to-First Automation" },
+  { value: "10 +",    label: "Automation Projects Delivered" },
   { value: "24/7", label: "Bot Monitoring & Support" },
 ];
 
