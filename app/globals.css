@@ -107,6 +107,11 @@ small,
   left: 140%;
 }
 
+/* Hide Next.js development badge/portal UI */
+nextjs-portal {
+  display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html,
   body {

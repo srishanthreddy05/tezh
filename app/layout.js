@@ -24,6 +24,11 @@ const dmMono = DM_Mono({
 export const metadata = {
   title: "TEZH",
   description: "Modern digital experiences by TEZH",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export const viewport = {
