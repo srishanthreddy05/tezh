@@ -203,13 +203,17 @@ export default function AboutPage() {
         }
         .cta-btn:hover::before { left: 140%; }
 
-        /* Founder image tilt */
-        .founder-img-wrap {
-          transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        /* Founder spotlight block */
+        .founder-panel {
+          max-width: 900px;
+          margin: 0 auto;
+          border: 1px solid var(--border);
+          border-radius: 1.25rem;
+          background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+          backdrop-filter: blur(4px);
+          padding: clamp(1.5rem, 3.2vw, 2.6rem);
         }
-        .founder-img-wrap:hover {
-          transform: perspective(800px) rotateY(-4deg) rotateX(2deg) scale(1.02);
-        }
+
       `}</style>
 
       <main className="ab-page ab-body w-full min-h-screen overflow-x-hidden">
@@ -288,49 +292,10 @@ export default function AboutPage() {
         <section id="founder" className="ab-grain relative py-28 px-6 overflow-hidden" style={{ background: "var(--bg-raised)" }}>
           <GridOrb x={85} y={20} size={350} opacity={0.5} delay={1} />
 
-          <div className="relative z-10 max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-
-            {/* Image */}
-            <Reveal delay={0} className="shrink-0">
-              <div className="founder-img-wrap relative w-72 h-80 md:w-80 md:h-96">
-                {/* Decorative border offset */}
-                <div className="absolute -inset-[1px] rounded-2xl pointer-events-none"
-                  style={{ border: "1px solid var(--border)" }} />
-                <div className="absolute top-4 left-4 w-full h-full rounded-2xl pointer-events-none"
-                  style={{ border: "1px solid rgba(255,255,255,0.04)" }} />
-
-                <div className="w-full h-full rounded-2xl overflow-hidden"
-                  style={{ background: "var(--bg-surface)" }}>
-                  <img
-                    src="/images/founder.jpg"
-                    alt="Tej Kumar Ponnala"
-                    className="w-full h-full object-cover"
-                    style={{ filter: "grayscale(20%) contrast(1.05)" }}
-                  />
-                  {/* Gradient overlay on image */}
-                  <div className="absolute inset-0 rounded-2xl"
-                    style={{ background: "linear-gradient(to top, rgba(17,18,20,0.5) 0%, transparent 50%)" }} />
-                </div>
-
-                {/* Floating badge */}
-                <motion.div
-                  className="absolute -bottom-5 -right-5 px-4 py-2 rounded-full text-xs tracking-wide"
-                  style={{
-                    background: "var(--bg-surface)",
-                    border: "1px solid var(--border)",
-                    color: "var(--text-secondary)",
-                    fontFamily: "'DM Sans', sans-serif",
-                  }}
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  ✦ Founder & CEO
-                </motion.div>
-              </div>
-            </Reveal>
+          <div className="relative z-10 max-w-6xl mx-auto">
 
             {/* Text */}
-            <div className="flex-1">
+            <div className="founder-panel text-center">
               <Reveal delay={0.1}>
                 <span className="text-[0.65rem] tracking-[0.3em] uppercase mb-4 block"
                   style={{ color: "var(--text-muted)" }}>
@@ -344,7 +309,7 @@ export default function AboutPage() {
                 </h2>
               </Reveal>
               <Reveal delay={0.26}>
-                <p className="text-base md:text-lg leading-relaxed mb-10 max-w-xl"
+                <p className="text-base md:text-lg leading-relaxed mb-10 max-w-2xl mx-auto"
                   style={{ color: "var(--text-secondary)" }}>
                   Passionate about building technology that transforms businesses and empowers
                   people. With over a decade of experience delivering enterprise solutions, Tej
@@ -353,7 +318,7 @@ export default function AboutPage() {
               </Reveal>
 
               {/* Stats */}
-              <StaggerReveal className="flex gap-6 flex-wrap">
+              <StaggerReveal className="flex gap-6 flex-wrap justify-center">
                 {[
                   { target: 10, suffix: "+", label: "Years of Service" },
                   { target: 30, suffix: "+", label: "Projects Delivered" },
@@ -396,7 +361,7 @@ function StatCard({ target, suffix, label, index }) {
     <motion.div
       ref={ref}
       variants={staggerChild}
-      className="stat-card flex flex-col px-6 py-5 rounded-xl min-w-[140px]"
+      className="stat-card flex flex-col px-6 py-5 rounded-xl min-w-[160px]"
       style={{
         background: "var(--bg-surface)",
         border: "1px solid var(--border)",

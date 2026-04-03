@@ -76,20 +76,44 @@ const CSS = `
   /* Select */
   .sp-select {
     width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--border);
-    padding: 14px 0;
-    color: var(--muted);
+    background: #ffffff;
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    padding: 12px 38px 12px 12px;
+    color: #1a1a1a;
     font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
     outline: none;
     cursor: pointer;
     appearance: none;
-    transition: border-color 0.25s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
-  .sp-select:focus { border-bottom-color: rgba(255,255,255,0.3); color: var(--text); }
-  .sp-select option { background: #ffffff; color: var(--text); }
+  .sp-select:focus {
+    border-color: #8e8e8e;
+    box-shadow: 0 0 0 3px rgba(124,92,191,0.12);
+  }
+  .sp-select:invalid { color: #747474; }
+  .sp-select option { background: #ffffff !important; color: #1a1a1a !important; }
+
+  .sp-form-shell {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    background: var(--surface);
+  }
+
+  @media (max-width: 640px) {
+    .sp-form-shell {
+      padding: 24px 18px;
+      border-radius: 14px;
+    }
+
+    .sp-input,
+    .sp-textarea,
+    .sp-select {
+      font-size: 16px;
+    }
+  }
 
   /* CTA button */
   .sp-cta {
@@ -325,17 +349,34 @@ function ContactSection() {
   const [form, setForm] = useState({
     name: "", email: "", organisation: "", phone: "", service: "", message: "",
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!form.name || !form.email || !form.message) return;
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 1400));
-    setLoading(false);
-    setSubmitted(true);
+
+    const serviceMap = {
+      it: "IT Services",
+      ai: "AI Agents",
+      automation: "Automation Solutions",
+      data: "Data Analytics",
+      other: "Other / Not sure",
+    };
+
+    const subject = encodeURIComponent(`New inquiry from ${form.name}`);
+    const body = encodeURIComponent([
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      `Organisation: ${form.organisation || "Not provided"}`,
+      `Phone: ${form.phone || "Not provided"}`,
+      `Service of Interest: ${serviceMap[form.service] || "Not provided"}`,
+      "",
+      "Project Summary:",
+      form.message,
+    ].join("\n"));
+
+    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=info@tezht.com&su=${subject}&body=${body}`;
+    window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -380,9 +421,15 @@ function ContactSection() {
               {[
                 {
                   icon: "◎",
-                  label: "Phone",
+                  label: "Phone (IN)",
                   value: "+91 93902 62628",
                   href: "tel:+919390262628",
+                },
+                {
+                  icon: "◎",
+                  label: "Phone (US)",
+                  value: "+1 (959) 282-4133",
+                  href: "tel:+19592824133",
                 },
                 {
                   icon: "◈",
@@ -393,11 +440,11 @@ function ContactSection() {
                 {
                   icon: "◉",
                   label: "Address",
-                  value: "3-33/B, Nawabpet, Mahbubnagar, Telangana — 509340",
+                  value: "Hyderabad",
                   href: null,
                 },
               ].map((item, i) => (
-                <Reveal key={item.label} delay={0.25 + i * 0.08}>
+                <Reveal key={`${item.label}-${i}`} delay={0.25 + i * 0.08}>
                   <div className="sp-info-card flex items-start gap-4">
                     <span style={{ color: "var(--faint)", fontSize: "1rem", marginTop: 2, flexShrink: 0 }}>
                       {item.icon}
@@ -431,30 +478,7 @@ function ContactSection() {
 
           {/* ── Right: Form ── */}
           <Reveal delay={0.15} className="order-1">
-            {submitted ? (
-              <motion.div
-                className="sp-success"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="text-3xl mb-4" style={{ color: "var(--faint)" }}>◎</div>
-                <h3 className="sp-display font-semibold text-xl mb-3" style={{ color: "var(--text)" }}>
-                  Message Received
-                </h3>
-                <p className="sp-body text-sm" style={{ color: "var(--muted)" }}>
-                  Thank you for reaching out. Our team will be in touch within 24 hours.
-                </p>
-              </motion.div>
-            ) : (
-              <div
-                style={{
-                  border: "1px solid var(--border)",
-                  borderRadius: 20,
-                  padding: "40px",
-                  background: "var(--surface)",
-                }}
-              >
+              <div className="sp-form-shell">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
                   <div>
                     <label className="sp-body block mb-1 text-[0.6rem] tracking-wider uppercase"
@@ -505,7 +529,7 @@ function ContactSection() {
                       className="sp-input"
                       name="phone"
                       type="tel"
-                      placeholder="+91 000 000 0000"
+                      placeholder="+91 93902 62628 / +1 (959) 282-4133"
                       value={form.phone}
                       onChange={handleChange}
                     />
@@ -532,7 +556,7 @@ function ContactSection() {
                       <option value="other">Other / Not sure</option>
                     </select>
                     <span style={{
-                      position: "absolute", right: 0, top: "50%",
+                      position: "absolute", right: 12, top: "50%",
                       transform: "translateY(-50%)",
                       color: "var(--faint)", pointerEvents: "none", fontSize: "0.7rem",
                     }}>
@@ -559,25 +583,15 @@ function ContactSection() {
                   <button
                     className="sp-cta"
                     onClick={handleSubmit}
-                    disabled={loading || !form.name || !form.email || !form.message}
+                    disabled={!form.name || !form.email || !form.message}
                   >
-                    {loading ? (
-                      <motion.span
-                        animate={{ opacity: [1, 0.4, 1] }}
-                        transition={{ duration: 1, repeat: Infinity }}
-                      >
-                        Sending…
-                      </motion.span>
-                    ) : (
-                      <>Send Message →</>
-                    )}
+                    <>Send Message →</>
                   </button>
                   <p className="sp-body text-xs" style={{ color: "var(--faint)" }}>
                     By sending, you agree to our terms & conditions.
                   </p>
                 </div>
               </div>
-            )}
           </Reveal>
         </div>
       </div>

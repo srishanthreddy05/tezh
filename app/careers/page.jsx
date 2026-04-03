@@ -516,8 +516,6 @@ function Perks() {
 function ApplyForm() {
   const [form, setForm] = useState({ name: "", email: "", mobile: "", skills: "" });
   const [fileName, setFileName] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -525,12 +523,22 @@ function ApplyForm() {
     if (e.target.files[0]) setFileName(e.target.files[0].name);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!form.name || !form.email) return;
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+
+    const subject = encodeURIComponent(`Career application from ${form.name}`);
+    const body = encodeURIComponent([
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      `Mobile: ${form.mobile || "Not provided"}`,
+      `Resume: ${fileName || "Not attached in browser form"}`,
+      "",
+      "Skills & Expertise:",
+      form.skills || "Not provided",
+    ].join("\n"));
+
+    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=info@tezht.com&su=${subject}&body=${body}`;
+    window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -563,23 +571,6 @@ function ApplyForm() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          {submitted ? (
-            <motion.div
-              className="sp-success"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="text-3xl mb-4" style={{ color: "var(--faint)" }}>◎</div>
-              <h3 className="sp-display font-semibold text-xl mb-3" style={{ color: "var(--text)" }}>
-                Application Received
-              </h3>
-              <p className="sp-body text-sm" style={{ color: "var(--muted)" }}>
-                Thank you for your interest in Tezh Technologies. We'll review your application
-                and be in touch within 3–5 business days.
-              </p>
-            </motion.div>
-          ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {/* Name */}
               <div>
@@ -621,7 +612,7 @@ function ApplyForm() {
                     className="sp-input"
                     name="mobile"
                     type="tel"
-                    placeholder="+1 000 000 0000"
+                    placeholder="Enter your mobile number"
                     value={form.mobile}
                     onChange={handleChange}
                   />
@@ -664,6 +655,9 @@ function ApplyForm() {
                     style={{ display: "none" }}
                   />
                 </label>
+                <p className="sp-body text-xs mt-2" style={{ color: "var(--faint)" }}>
+                  Resume is not auto-attached by browser. After Gmail opens, please attach your file before sending.
+                </p>
               </div>
 
               {/* Divider */}
@@ -673,25 +667,15 @@ function ApplyForm() {
               <button
                 className="sp-cta w-full justify-center"
                 onClick={handleSubmit}
-                disabled={loading || !form.name || !form.email}
+                disabled={!form.name || !form.email}
               >
-                {loading ? (
-                  <motion.span
-                    animate={{ opacity: [1, 0.4, 1] }}
-                    transition={{ duration: 1, repeat: Infinity }}
-                  >
-                    Sending…
-                  </motion.span>
-                ) : (
-                  "Send Application →"
-                )}
+                {"Send Application →"}
               </button>
 
               <p className="sp-body text-center text-xs" style={{ color: "var(--faint)" }}>
                 Average response time: &lt; 3–5 business days · All applications are reviewed
               </p>
             </div>
-          )}
         </Reveal>
       </div>
     </section>

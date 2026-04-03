@@ -146,7 +146,7 @@ export default function Navbar() {
           top: 0;
           left: 0;
           width: 100%;
-          height: 100vh;
+          height: 100dvh;
           background: #0d0d0d;
           color: #ffffff;
           transform: translateY(-2%);
@@ -156,6 +156,14 @@ export default function Navbar() {
           z-index: 120;
           display: grid;
           grid-template-columns: 1fr;
+        }
+
+        @media (max-width: 1023px) {
+          .nb-panel {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+          }
         }
 
         .nb-panel.open {
@@ -311,7 +319,8 @@ export default function Navbar() {
           </div>
           <div className="nb-sans nb-panel-meta">
             <span>hello@tezht.com</span>
-            <span>+91 00000 00000</span>
+            <span>+91 93902 62628</span>
+            <span>+1 (959) 282-4133</span>
             <span>Mon - Fri, 9:00 AM - 6:00 PM</span>
           </div>
         </div>

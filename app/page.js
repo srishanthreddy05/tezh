@@ -953,14 +953,7 @@ function SocialProof() {
 function Founder() {
   return (
     <section className="hp-section">
-      <div className="hp-container hp-grid-2">
-        <Reveal>
-          <div className="hp-card" style={{ maxWidth: 390, aspectRatio: "3/4", display: "grid", placeItems: "center" }}>
-            <span className="hp-icon" style={{ fontSize: "3rem" }}>◎</span>
-            <p className="hp-num" style={{ position: "absolute", bottom: 16 }}>Tej Ponnala · CEO</p>
-          </div>
-        </Reveal>
-
+      <div className="hp-container">
         <Reveal>
           <div>
             <span className="hp-eyebrow">From the Founder</span>
@@ -1068,7 +1061,7 @@ function Footer() {
           <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>info@tezht.com</p>
           <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>+91 93902 62628</p>
           <p style={{ margin: "0 0 0.45rem", color: "#f8f6f2" }}>+1 (959) 282-4133</p>
-          <p style={{ margin: 0, color: "#d2cdc3", lineHeight: 1.6 }}>Nawabpet, Mahbubnagar, Telangana - 509340</p>
+          <p style={{ margin: 0, color: "#d2cdc3", lineHeight: 1.6 }}>Hyderabad</p>
         </div>
       </div>
 
